@@ -1,13 +1,14 @@
 # coding: utf-8
 
-import cppjieba
+
+from jiebax import JiebaX, TextRankWords
 
 
 TEST_DICT_FILEPATH = "./dict.test.txt"
 BETTER_DICT_FILEPATH = "./jieba.dict.better.txt"
+BLOOD_PARROT_FILEPATH = "./jiebax/test_txt/blood_parrot.utf8.txt"
 
-
-JIEBAX = cppjieba.JiebaX(dict_path=BETTER_DICT_FILEPATH, model_path="./hmm_model.utf8")
+JIEBAX = JiebaX()
 
 TEST_TEXT = """
 “魏则西事件”引发网民对医疗服务和医疗信息商业推广的广泛关注。5月9日，国家网信办会同国家工商总局、国家卫生计生委成立的联合调查组向社会公布了调查结果，提出要求百度做出严格审核商业推广服务、明示推广内容和风险、排名机制调整等多项整改要求。
@@ -57,7 +58,7 @@ def _convert_blood_parrot():
 def cut_benchmark(x_flag=True, posseg_flag=True):
     import time
 
-    with open("./test_txt/blood_parrot.utf8.txt", "r") as F:
+    with open(BLOOD_PARROT_FILEPATH, "r") as F:
         content = F.read()
     content = TEST_TEXT
 
@@ -100,12 +101,12 @@ def cut_benchmark(x_flag=True, posseg_flag=True):
 def keywords_benchmark():
     import time
 
-    with open("./test_txt/blood_parrot.utf8.txt", "r") as F:
+    with open(BLOOD_PARROT_FILEPATH, "r") as F:
         content = F.read()
 
     # content = TEST_TEXT
 
-    textrank = cppjieba.JiebaXTextRank(JIEBAX)
+    textrank = TextRankWords(JIEBAX)
 
     words = JIEBAX.posseg_nav(content, return_pair=False)
     # print len(words)

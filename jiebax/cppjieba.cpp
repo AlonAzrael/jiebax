@@ -8,7 +8,7 @@
             "jiebax/TextRankExtractor.hpp"
         ], 
         "extra_compile_args": [
-            "-std=c++1y"
+            "-std=c++11"
         ], 
         "language": "c++"
     }

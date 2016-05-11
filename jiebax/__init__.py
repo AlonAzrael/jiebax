@@ -1,7 +1,7 @@
 
 
 
-from cppjieba import JiebaX as JiebaX
+from cppjieba import JiebaX as JiebaX, JiebaXTextRank as TextRankWords
 
 # class JiebaX(_JiebaX):
 

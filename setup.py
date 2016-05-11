@@ -27,7 +27,7 @@ extensions = [Extension(
     sources=["./jiebax/cppjieba.pyx", ], # the Cython source and additional C++ source files
     # "Jieba.hpp"
     language="c++", # generate and compile C++ code
-    extra_compile_args=["-std=c++1y"],
+    extra_compile_args=["-std=c++11"],
 )]
 
 
