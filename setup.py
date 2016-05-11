@@ -24,13 +24,18 @@ elif _platform == "win32":
 
 extensions = [Extension(
     name="cppjieba", # the extesion name
-    sources=["cppjieba.pyx", ], # the Cython source and additional C++ source files
+    sources=["./jiebax/cppjieba.pyx", ], # the Cython source and additional C++ source files
     # "Jieba.hpp"
     language="c++", # generate and compile C++ code
     extra_compile_args=["-std=c++1y"],
 )]
 
-setup(name="jiebax", ext_modules=cythonize(extensions))
+
+setup(name="jiebax", ext_modules=cythonize(extensions), 
+    packages=['jiebax'],
+    package_dir={'jiebax':'jiebax'},
+    package_data={'jiebax':['*.*']}
+)
 
 
 # setup(ext_modules = cythonize(
