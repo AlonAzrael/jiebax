@@ -518,7 +518,7 @@ static const char *__pyx_f[] = {
 struct __pyx_obj_6jiebax_8cppjieba_JiebaX;
 struct __pyx_obj_6jiebax_8cppjieba_JiebaXTextRank;
 
-/* "jiebax/cppjieba.pyx":56
+/* "jiebax/cppjieba.pyx":66
  * 
  * 
  * cdef class JiebaX:             # <<<<<<<<<<<<<<
@@ -531,7 +531,7 @@ struct __pyx_obj_6jiebax_8cppjieba_JiebaX {
 };
 
 
-/* "jiebax/cppjieba.pyx":190
+/* "jiebax/cppjieba.pyx":235
  * 
  * 
  * cdef class JiebaXTextRank:             # <<<<<<<<<<<<<<
@@ -608,22 +608,6 @@ struct __pyx_obj_6jiebax_8cppjieba_JiebaXTextRank {
 #define __Pyx_CLEAR(r)    do { PyObject* tmp = ((PyObject*)(r)); r = NULL; __Pyx_DECREF(tmp);} while(0)
 #define __Pyx_XCLEAR(r)   do { if((r) != NULL) {PyObject* tmp = ((PyObject*)(r)); r = NULL; __Pyx_DECREF(tmp);}} while(0)
 
-/* RaiseDoubleKeywords.proto */
-static void __Pyx_RaiseDoubleKeywordsError(const char* func_name, PyObject* kw_name);
-
-/* ParseKeywords.proto */
-static int __Pyx_ParseOptionalKeywords(PyObject *kwds, PyObject **argnames[],\
-    PyObject *kwds2, PyObject *values[], Py_ssize_t num_pos_args,\
-    const char* function_name);
-
-/* RaiseArgTupleInvalid.proto */
-static void __Pyx_RaiseArgtupleInvalid(const char* func_name, int exact,
-    Py_ssize_t num_min, Py_ssize_t num_max, Py_ssize_t num_found);
-
-/* ArgTypeTest.proto */
-static CYTHON_INLINE int __Pyx_ArgTypeTest(PyObject *obj, PyTypeObject *type, int none_allowed,
-    const char *name, int exact);
-
 /* PyObjectGetAttrStr.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject* attr_name) {
@@ -640,6 +624,21 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject
 #define __Pyx_PyObject_GetAttrStr(o,n) PyObject_GetAttr(o,n)
 #endif
 
+/* GetBuiltinName.proto */
+static PyObject *__Pyx_GetBuiltinName(PyObject *name);
+
+/* RaiseDoubleKeywords.proto */
+static void __Pyx_RaiseDoubleKeywordsError(const char* func_name, PyObject* kw_name);
+
+/* ParseKeywords.proto */
+static int __Pyx_ParseOptionalKeywords(PyObject *kwds, PyObject **argnames[],\
+    PyObject *kwds2, PyObject *values[], Py_ssize_t num_pos_args,\
+    const char* function_name);
+
+/* RaiseArgTupleInvalid.proto */
+static void __Pyx_RaiseArgtupleInvalid(const char* func_name, int exact,
+    Py_ssize_t num_min, Py_ssize_t num_max, Py_ssize_t num_found);
+
 /* PyObjectCall.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw);
@@ -655,17 +654,97 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject
 /* PyObjectCallOneArg.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
 
-/* RaiseTooManyValuesToUnpack.proto */
-static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected);
+/* ListCompAppend.proto */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE int __Pyx_ListComp_Append(PyObject* list, PyObject* x) {
+    PyListObject* L = (PyListObject*) list;
+    Py_ssize_t len = Py_SIZE(list);
+    if (likely(L->allocated > len)) {
+        Py_INCREF(x);
+        PyList_SET_ITEM(list, len, x);
+        Py_SIZE(list) = len+1;
+        return 0;
+    }
+    return PyList_Append(list, x);
+}
+#else
+#define __Pyx_ListComp_Append(L,x) PyList_Append(L,x)
+#endif
 
-/* RaiseNeedMoreValuesToUnpack.proto */
-static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index);
+/* ArgTypeTest.proto */
+static CYTHON_INLINE int __Pyx_ArgTypeTest(PyObject *obj, PyTypeObject *type, int none_allowed,
+    const char *name, int exact);
+
+/* PyThreadStateGet.proto */
+#if CYTHON_COMPILING_IN_CPYTHON
+#define __Pyx_PyThreadState_declare  PyThreadState *__pyx_tstate;
+#define __Pyx_PyThreadState_assign  __pyx_tstate = PyThreadState_GET();
+#else
+#define __Pyx_PyThreadState_declare
+#define __Pyx_PyThreadState_assign
+#endif
+
+/* PyErrFetchRestore.proto */
+#if CYTHON_COMPILING_IN_CPYTHON
+#define __Pyx_ErrRestoreWithState(type, value, tb)  __Pyx_ErrRestoreInState(PyThreadState_GET(), type, value, tb)
+#define __Pyx_ErrFetchWithState(type, value, tb)    __Pyx_ErrFetchInState(PyThreadState_GET(), type, value, tb)
+#define __Pyx_ErrRestore(type, value, tb)  __Pyx_ErrRestoreInState(__pyx_tstate, type, value, tb)
+#define __Pyx_ErrFetch(type, value, tb)    __Pyx_ErrFetchInState(__pyx_tstate, type, value, tb)
+static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb);
+static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
+#else
+#define __Pyx_ErrRestoreWithState(type, value, tb)  PyErr_Restore(type, value, tb)
+#define __Pyx_ErrFetchWithState(type, value, tb)  PyErr_Fetch(type, value, tb)
+#define __Pyx_ErrRestore(type, value, tb)  PyErr_Restore(type, value, tb)
+#define __Pyx_ErrFetch(type, value, tb)  PyErr_Fetch(type, value, tb)
+#endif
+
+/* RaiseException.proto */
+static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
+
+/* KeywordStringCheck.proto */
+static CYTHON_INLINE int __Pyx_CheckKeywordStrings(PyObject *kwdict, const char* function_name, int kw_allowed);
 
 /* IterFinish.proto */
 static CYTHON_INLINE int __Pyx_IterFinish(void);
 
+/* PyObjectCallNoArg.proto */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
+#else
+#define __Pyx_PyObject_CallNoArg(func) __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL)
+#endif
+
+/* PyObjectCallMethod0.proto */
+static PyObject* __Pyx_PyObject_CallMethod0(PyObject* obj, PyObject* method_name);
+
+/* RaiseNeedMoreValuesToUnpack.proto */
+static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index);
+
+/* RaiseTooManyValuesToUnpack.proto */
+static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected);
+
 /* UnpackItemEndCheck.proto */
 static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected);
+
+/* RaiseNoneIterError.proto */
+static CYTHON_INLINE void __Pyx_RaiseNoneNotIterableError(void);
+
+/* UnpackTupleError.proto */
+static void __Pyx_UnpackTupleError(PyObject *, Py_ssize_t index);
+
+/* UnpackTuple2.proto */
+static CYTHON_INLINE int __Pyx_unpack_tuple2(PyObject* tuple, PyObject** value1, PyObject** value2,
+                                             int is_tuple, int has_known_size, int decref_tuple);
+
+/* dict_iter.proto */
+static CYTHON_INLINE PyObject* __Pyx_dict_iterator(PyObject* dict, int is_dict, PyObject* method_name,
+                                                   Py_ssize_t* p_orig_length, int* p_is_dict);
+static CYTHON_INLINE int __Pyx_dict_iter_next(PyObject* dict_or_iter, Py_ssize_t orig_length, Py_ssize_t* ppos,
+                                              PyObject** pkey, PyObject** pvalue, PyObject** pitem, int is_dict);
+
+/* MergeKeywords.proto */
+static int __Pyx_MergeKeywords(PyObject *kwdict, PyObject *source_mapping);
 
 /* PySequenceContains.proto */
 static CYTHON_INLINE int __Pyx_PySequence_ContainsTF(PyObject* item, PyObject* seq, int eq) {
@@ -704,38 +783,11 @@ static CYTHON_INLINE int __Pyx_PyList_Append(PyObject* list, PyObject* x) {
 #define __Pyx_PyList_Append(L,x) PyList_Append(L,x)
 #endif
 
-/* ListCompAppend.proto */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE int __Pyx_ListComp_Append(PyObject* list, PyObject* x) {
-    PyListObject* L = (PyListObject*) list;
-    Py_ssize_t len = Py_SIZE(list);
-    if (likely(L->allocated > len)) {
-        Py_INCREF(x);
-        PyList_SET_ITEM(list, len, x);
-        Py_SIZE(list) = len+1;
-        return 0;
-    }
-    return PyList_Append(list, x);
-}
-#else
-#define __Pyx_ListComp_Append(L,x) PyList_Append(L,x)
-#endif
-
-/* GetBuiltinName.proto */
-static PyObject *__Pyx_GetBuiltinName(PyObject *name);
-
 /* Import.proto */
 static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level);
 
 /* GetModuleGlobalName.proto */
 static CYTHON_INLINE PyObject *__Pyx_GetModuleGlobalName(PyObject *name);
-
-/* PyObjectCallNoArg.proto */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
-#else
-#define __Pyx_PyObject_CallNoArg(func) __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL)
-#endif
 
 /* GetItemInt.proto */
 #define __Pyx_GetItemInt(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
@@ -868,10 +920,12 @@ static PyObject *__pyx_convert_vector_to_py_std_3a__3a_pair_3c_std_3a__3a_string
 int __pyx_module_is_main_jiebax__cppjieba = 0;
 
 /* Implementation of 'jiebax.cppjieba' */
+static PyObject *__pyx_builtin_Exception;
 static PyObject *__pyx_builtin_range;
 static const char __pyx_k_n[] = "n";
-static const char __pyx_k__9[] = "";
 static const char __pyx_k_os[] = "os";
+static const char __pyx_k__12[] = "";
+static const char __pyx_k_docs[] = "docs";
 static const char __pyx_k_join[] = "join";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "name";
@@ -883,7 +937,9 @@ static const char __pyx_k_text[] = "text";
 static const char __pyx_k_fpath[] = "fpath";
 static const char __pyx_k_items[] = "items";
 static const char __pyx_k_range[] = "range";
+static const char __pyx_k_utf_8[] = "utf-8";
 static const char __pyx_k_words[] = "words";
+static const char __pyx_k_encode[] = "encode";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_isfile[] = "isfile";
 static const char __pyx_k_jiebax[] = "jiebax";
@@ -891,15 +947,22 @@ static const char __pyx_k_n_span[] = "n_span";
 static const char __pyx_k_posseg[] = "posseg";
 static const char __pyx_k_ifin_set[] = "ifin_set";
 static const char __pyx_k_jiebax_2[] = "./jiebax";
+static const char __pyx_k_pos_tags[] = "pos_tags";
 static const char __pyx_k_DICT_PATH[] = "DICT_PATH";
+static const char __pyx_k_Exception[] = "Exception";
 static const char __pyx_k_dict_path[] = "dict_path";
 static const char __pyx_k_max_words[] = "max_words";
+static const char __pyx_k_n_threads[] = "n_threads";
 static const char __pyx_k_MODEL_PATH[] = "MODEL_PATH";
 static const char __pyx_k_model_path[] = "model_path";
+static const char __pyx_k_posseg_nav[] = "posseg_nav";
 static const char __pyx_k_return_pair[] = "return_pair";
+static const char __pyx_k_unicode_flag[] = "unicode_flag";
 static const char __pyx_k_SITEPKGS_PATH[] = "SITEPKGS_PATH";
 static const char __pyx_k_DATA_PATH_DICT[] = "DATA_PATH_DICT";
 static const char __pyx_k_STOPWORDS_PATH[] = "STOPWORDS_PATH";
+static const char __pyx_k_convert_encode[] = "convert_encode";
+static const char __pyx_k_cut_docs_multi[] = "cut_docs_multi";
 static const char __pyx_k_hmm_model_utf8[] = "hmm_model.utf8";
 static const char __pyx_k_max_rank_epoch[] = "max_rank_epoch";
 static const char __pyx_k_user_dict_path[] = "user_dict_path";
@@ -908,13 +971,19 @@ static const char __pyx_k_startswith_list[] = "startswith_list";
 static const char __pyx_k_stop_words_utf8[] = "stop_words.utf8";
 static const char __pyx_k_stop_words_filepath[] = "stop_words_filepath";
 static const char __pyx_k_jieba_dict_better_txt[] = "jieba.dict.better.txt";
+static const char __pyx_k_no_multithread_implementation[] = "no multithread implementation";
 static PyObject *__pyx_n_s_DATA_PATH_DICT;
 static PyObject *__pyx_n_s_DICT_PATH;
+static PyObject *__pyx_n_s_Exception;
 static PyObject *__pyx_n_s_MODEL_PATH;
 static PyObject *__pyx_n_s_SITEPKGS_PATH;
 static PyObject *__pyx_n_s_STOPWORDS_PATH;
-static PyObject *__pyx_kp_b__9;
+static PyObject *__pyx_kp_b__12;
+static PyObject *__pyx_n_s_convert_encode;
+static PyObject *__pyx_n_s_cut_docs_multi;
 static PyObject *__pyx_n_s_dict_path;
+static PyObject *__pyx_n_s_docs;
+static PyObject *__pyx_n_s_encode;
 static PyObject *__pyx_n_s_fpath;
 static PyObject *__pyx_n_s_getsitepackages;
 static PyObject *__pyx_kp_s_hmm_model_utf8;
@@ -932,10 +1001,14 @@ static PyObject *__pyx_n_s_max_words;
 static PyObject *__pyx_n_s_model_path;
 static PyObject *__pyx_n_s_n;
 static PyObject *__pyx_n_s_n_span;
+static PyObject *__pyx_n_s_n_threads;
 static PyObject *__pyx_n_s_name;
+static PyObject *__pyx_kp_s_no_multithread_implementation;
 static PyObject *__pyx_n_s_os;
 static PyObject *__pyx_n_s_path;
+static PyObject *__pyx_n_s_pos_tags;
 static PyObject *__pyx_n_s_posseg;
+static PyObject *__pyx_n_s_posseg_nav;
 static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_return_pair;
 static PyObject *__pyx_n_s_site;
@@ -945,16 +1018,21 @@ static PyObject *__pyx_kp_s_stop_words_utf8;
 static PyObject *__pyx_n_s_temp;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_text;
+static PyObject *__pyx_n_s_unicode_flag;
 static PyObject *__pyx_n_s_user_dict_path;
+static PyObject *__pyx_kp_s_utf_8;
 static PyObject *__pyx_n_s_words;
 static int __pyx_pf_6jiebax_8cppjieba_6JiebaX___cinit__(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, std::string __pyx_v_dict_path, std::string __pyx_v_model_path, std::string __pyx_v_user_dict_path); /* proto */
 static void __pyx_pf_6jiebax_8cppjieba_6JiebaX_2__dealloc__(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_4cut(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, std::string __pyx_v_text); /* proto */
-static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_6posseg(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, std::string __pyx_v_text); /* proto */
-static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_8posseg_nav(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, std::string __pyx_v_text, PyObject *__pyx_v_return_pair); /* proto */
-static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_10posseg_filter(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, std::string __pyx_v_text, PyObject *__pyx_v_ifin_set, PyObject *__pyx_v_startswith_list, PyObject *__pyx_v_return_pair); /* proto */
-static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, std::string __pyx_v_text, PyObject *__pyx_v_startswith_list, PyObject *__pyx_v_ifin_set, PyObject *__pyx_v_return_pair); /* proto */
-static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, std::string __pyx_v_text, PyObject *__pyx_v_return_pair); /* proto */
+static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_4convert_encode(CYTHON_UNUSED struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_text); /* proto */
+static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_6cut(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_text, PyObject *__pyx_v_unicode_flag); /* proto */
+static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_8posseg(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_text); /* proto */
+static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_10posseg_nav(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_text, PyObject *__pyx_v_return_pair); /* proto */
+static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12posseg_filter(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_text, PyObject *__pyx_v_ifin_set, PyObject *__pyx_v_startswith_list, PyObject *__pyx_v_return_pair); /* proto */
+static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14cut_docs_multi(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_docs, CYTHON_UNUSED PyObject *__pyx_v_pos_tags, PyObject *__pyx_v_n_threads); /* proto */
+static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_16cut_docs(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_args, PyObject *__pyx_v_kwargs); /* proto */
+static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_18_DEPRE_posseg_filter(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, std::string __pyx_v_text, PyObject *__pyx_v_startswith_list, PyObject *__pyx_v_ifin_set, PyObject *__pyx_v_return_pair); /* proto */
+static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_20_DEPRE_posseg_nav(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, std::string __pyx_v_text, PyObject *__pyx_v_return_pair); /* proto */
 static int __pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank___cinit__(struct __pyx_obj_6jiebax_8cppjieba_JiebaXTextRank *__pyx_v_self, struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_jiebax, std::string __pyx_v_stop_words_filepath); /* proto */
 static void __pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank_2__dealloc__(struct __pyx_obj_6jiebax_8cppjieba_JiebaXTextRank *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank_4extract(struct __pyx_obj_6jiebax_8cppjieba_JiebaXTextRank *__pyx_v_self, std::string __pyx_v_text, int __pyx_v_max_words); /* proto */
@@ -962,16 +1040,21 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank_6extract_by_words(s
 static PyObject *__pyx_tp_new_6jiebax_8cppjieba_JiebaX(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_6jiebax_8cppjieba_JiebaXTextRank(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_float_1_0;
+static PyObject *__pyx_int_1;
+static PyObject *__pyx_int_2;
 static std::string __pyx_k_;
 static std::string __pyx_k__2;
 static std::string __pyx_k__3;
-static PyObject *__pyx_k__4;
 static PyObject *__pyx_k__5;
 static PyObject *__pyx_k__6;
 static PyObject *__pyx_k__7;
-static std::string __pyx_k__8;
+static PyObject *__pyx_k__9;
+static PyObject *__pyx_k__10;
+static std::string __pyx_k__11;
+static PyObject *__pyx_tuple__4;
+static PyObject *__pyx_tuple__8;
 
-/* "jiebax/cppjieba.pyx":62
+/* "jiebax/cppjieba.pyx":72
  *     # cdef Jieba& thisref
  * 
  *     def __cinit__(self, string dict_path=DICT_PATH, string model_path=MODEL_PATH, string user_dict_path=""):             # <<<<<<<<<<<<<<
@@ -1020,7 +1103,7 @@ static int __pyx_pw_6jiebax_8cppjieba_6JiebaX_1__cinit__(PyObject *__pyx_v_self,
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 62, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 72, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -1032,24 +1115,24 @@ static int __pyx_pw_6jiebax_8cppjieba_6JiebaX_1__cinit__(PyObject *__pyx_v_self,
       }
     }
     if (values[0]) {
-      __pyx_v_dict_path = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 62, __pyx_L3_error)
+      __pyx_v_dict_path = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 72, __pyx_L3_error)
     } else {
       __pyx_v_dict_path = __pyx_k_;
     }
     if (values[1]) {
-      __pyx_v_model_path = __pyx_convert_string_from_py_std__in_string(values[1]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 62, __pyx_L3_error)
+      __pyx_v_model_path = __pyx_convert_string_from_py_std__in_string(values[1]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 72, __pyx_L3_error)
     } else {
       __pyx_v_model_path = __pyx_k__2;
     }
     if (values[2]) {
-      __pyx_v_user_dict_path = __pyx_convert_string_from_py_std__in_string(values[2]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 62, __pyx_L3_error)
+      __pyx_v_user_dict_path = __pyx_convert_string_from_py_std__in_string(values[2]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 72, __pyx_L3_error)
     } else {
       __pyx_v_user_dict_path = __pyx_k__3;
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 0, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 62, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 0, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 72, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jiebax.cppjieba.JiebaX.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -1068,7 +1151,7 @@ static int __pyx_pf_6jiebax_8cppjieba_6JiebaX___cinit__(struct __pyx_obj_6jiebax
   cppjieba::Jieba *__pyx_t_1;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "jiebax/cppjieba.pyx":63
+  /* "jiebax/cppjieba.pyx":73
  * 
  *     def __cinit__(self, string dict_path=DICT_PATH, string model_path=MODEL_PATH, string user_dict_path=""):
  *         self.thisptr = new Jieba(dict_path, model_path, user_dict_path)             # <<<<<<<<<<<<<<
@@ -1079,11 +1162,11 @@ static int __pyx_pf_6jiebax_8cppjieba_6JiebaX___cinit__(struct __pyx_obj_6jiebax
     __pyx_t_1 = new cppjieba::Jieba(__pyx_v_dict_path, __pyx_v_model_path, __pyx_v_user_dict_path);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 63, __pyx_L1_error)
+    __PYX_ERR(0, 73, __pyx_L1_error)
   }
   __pyx_v_self->thisptr = __pyx_t_1;
 
-  /* "jiebax/cppjieba.pyx":62
+  /* "jiebax/cppjieba.pyx":72
  *     # cdef Jieba& thisref
  * 
  *     def __cinit__(self, string dict_path=DICT_PATH, string model_path=MODEL_PATH, string user_dict_path=""):             # <<<<<<<<<<<<<<
@@ -1102,7 +1185,7 @@ static int __pyx_pf_6jiebax_8cppjieba_6JiebaX___cinit__(struct __pyx_obj_6jiebax
   return __pyx_r;
 }
 
-/* "jiebax/cppjieba.pyx":65
+/* "jiebax/cppjieba.pyx":75
  *         self.thisptr = new Jieba(dict_path, model_path, user_dict_path)
  *         # self.thisref = deref(self.thisptr)
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -1125,7 +1208,7 @@ static void __pyx_pf_6jiebax_8cppjieba_6JiebaX_2__dealloc__(struct __pyx_obj_6ji
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
-  /* "jiebax/cppjieba.pyx":66
+  /* "jiebax/cppjieba.pyx":76
  *         # self.thisref = deref(self.thisptr)
  *     def __dealloc__(self):
  *         del self.thisptr             # <<<<<<<<<<<<<<
@@ -1134,7 +1217,7 @@ static void __pyx_pf_6jiebax_8cppjieba_6JiebaX_2__dealloc__(struct __pyx_obj_6ji
  */
   delete __pyx_v_self->thisptr;
 
-  /* "jiebax/cppjieba.pyx":65
+  /* "jiebax/cppjieba.pyx":75
  *         self.thisptr = new Jieba(dict_path, model_path, user_dict_path)
  *         # self.thisref = deref(self.thisptr)
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -1146,188 +1229,497 @@ static void __pyx_pf_6jiebax_8cppjieba_6JiebaX_2__dealloc__(struct __pyx_obj_6ji
   __Pyx_RefNannyFinishContext();
 }
 
-/* "jiebax/cppjieba.pyx":74
- *     # methods borrow from cppjieba
+/* "jiebax/cppjieba.pyx":84
+ *     # utils
  * 
- *     def cut(self, string text):             # <<<<<<<<<<<<<<
- *         cdef vector[string] words_vector
- *         self.thisptr.Cut(text, words_vector, 1)
+ *     def convert_encode(self, text):             # <<<<<<<<<<<<<<
+ *         if type(text) == unicode:
+ *             text = text.encode("utf-8")
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_5cut(PyObject *__pyx_v_self, PyObject *__pyx_arg_text); /*proto*/
-static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_5cut(PyObject *__pyx_v_self, PyObject *__pyx_arg_text) {
-  std::string __pyx_v_text;
+static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_5convert_encode(PyObject *__pyx_v_self, PyObject *__pyx_v_text); /*proto*/
+static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_5convert_encode(PyObject *__pyx_v_self, PyObject *__pyx_v_text) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("cut (wrapper)", 0);
-  assert(__pyx_arg_text); {
-    __pyx_v_text = __pyx_convert_string_from_py_std__in_string(__pyx_arg_text); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 74, __pyx_L3_error)
-  }
-  goto __pyx_L4_argument_unpacking_done;
-  __pyx_L3_error:;
-  __Pyx_AddTraceback("jiebax.cppjieba.JiebaX.cut", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __Pyx_RefNannyFinishContext();
-  return NULL;
-  __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_6jiebax_8cppjieba_6JiebaX_4cut(((struct __pyx_obj_6jiebax_8cppjieba_JiebaX *)__pyx_v_self), ((std::string)__pyx_v_text));
+  __Pyx_RefNannySetupContext("convert_encode (wrapper)", 0);
+  __pyx_r = __pyx_pf_6jiebax_8cppjieba_6JiebaX_4convert_encode(((struct __pyx_obj_6jiebax_8cppjieba_JiebaX *)__pyx_v_self), ((PyObject *)__pyx_v_text));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_4cut(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, std::string __pyx_v_text) {
-  std::vector<std::string>  __pyx_v_words_vector;
+static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_4convert_encode(CYTHON_UNUSED struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_text) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  __Pyx_RefNannySetupContext("cut", 0);
+  int __pyx_t_2;
+  PyObject *__pyx_t_3 = NULL;
+  __Pyx_RefNannySetupContext("convert_encode", 0);
+  __Pyx_INCREF(__pyx_v_text);
 
-  /* "jiebax/cppjieba.pyx":76
- *     def cut(self, string text):
+  /* "jiebax/cppjieba.pyx":85
+ * 
+ *     def convert_encode(self, text):
+ *         if type(text) == unicode:             # <<<<<<<<<<<<<<
+ *             text = text.encode("utf-8")
+ * 
+ */
+  __pyx_t_1 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_text)), ((PyObject *)(&PyUnicode_Type)), Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (__pyx_t_2) {
+
+    /* "jiebax/cppjieba.pyx":86
+ *     def convert_encode(self, text):
+ *         if type(text) == unicode:
+ *             text = text.encode("utf-8")             # <<<<<<<<<<<<<<
+ * 
+ *         return text
+ */
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_text, __pyx_n_s_encode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 86, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF_SET(__pyx_v_text, __pyx_t_3);
+    __pyx_t_3 = 0;
+
+    /* "jiebax/cppjieba.pyx":85
+ * 
+ *     def convert_encode(self, text):
+ *         if type(text) == unicode:             # <<<<<<<<<<<<<<
+ *             text = text.encode("utf-8")
+ * 
+ */
+  }
+
+  /* "jiebax/cppjieba.pyx":88
+ *             text = text.encode("utf-8")
+ * 
+ *         return text             # <<<<<<<<<<<<<<
+ * 
+ *     # methods borrow from cppjieba
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_text);
+  __pyx_r = __pyx_v_text;
+  goto __pyx_L0;
+
+  /* "jiebax/cppjieba.pyx":84
+ *     # utils
+ * 
+ *     def convert_encode(self, text):             # <<<<<<<<<<<<<<
+ *         if type(text) == unicode:
+ *             text = text.encode("utf-8")
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_AddTraceback("jiebax.cppjieba.JiebaX.convert_encode", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_text);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "jiebax/cppjieba.pyx":92
+ *     # methods borrow from cppjieba
+ * 
+ *     def cut(self, text, unicode_flag=False):             # <<<<<<<<<<<<<<
+ *         text = self.convert_encode(text)
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_7cut(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_7cut(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_text = 0;
+  PyObject *__pyx_v_unicode_flag = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("cut (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_text,&__pyx_n_s_unicode_flag,0};
+    PyObject* values[2] = {0,0};
+    values[1] = ((PyObject *)Py_False);
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_text)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        case  1:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_unicode_flag);
+          if (value) { values[1] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "cut") < 0)) __PYX_ERR(0, 92, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_text = values[0];
+    __pyx_v_unicode_flag = values[1];
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("cut", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 92, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("jiebax.cppjieba.JiebaX.cut", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_6jiebax_8cppjieba_6JiebaX_6cut(((struct __pyx_obj_6jiebax_8cppjieba_JiebaX *)__pyx_v_self), __pyx_v_text, __pyx_v_unicode_flag);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_6cut(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_text, PyObject *__pyx_v_unicode_flag) {
+  std::vector<std::string>  __pyx_v_words_vector;
+  PyObject *__pyx_v_words_unicode = 0;
+  PyObject *__pyx_v_word = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  std::string __pyx_t_5;
+  int __pyx_t_6;
+  Py_ssize_t __pyx_t_7;
+  __Pyx_RefNannySetupContext("cut", 0);
+  __Pyx_INCREF(__pyx_v_text);
+
+  /* "jiebax/cppjieba.pyx":93
+ * 
+ *     def cut(self, text, unicode_flag=False):
+ *         text = self.convert_encode(text)             # <<<<<<<<<<<<<<
+ * 
+ *         cdef vector[string] words_vector
+ */
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_convert_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 93, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = NULL;
+  if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_3)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_3);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+    }
+  }
+  if (!__pyx_t_3) {
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_text); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+  } else {
+    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 93, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3); __pyx_t_3 = NULL;
+    __Pyx_INCREF(__pyx_v_text);
+    __Pyx_GIVEREF(__pyx_v_text);
+    PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_text);
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF_SET(__pyx_v_text, __pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "jiebax/cppjieba.pyx":96
+ * 
  *         cdef vector[string] words_vector
  *         self.thisptr.Cut(text, words_vector, 1)             # <<<<<<<<<<<<<<
  *         # cdef list words = words_vector
  * 
  */
+  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_text); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 96, __pyx_L1_error)
   try {
-    __pyx_v_self->thisptr->Cut(__pyx_v_text, __pyx_v_words_vector, 1);
+    __pyx_v_self->thisptr->Cut(__pyx_t_5, __pyx_v_words_vector, 1);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 76, __pyx_L1_error)
+    __PYX_ERR(0, 96, __pyx_L1_error)
   }
 
-  /* "jiebax/cppjieba.pyx":79
- *         # cdef list words = words_vector
+  /* "jiebax/cppjieba.pyx":100
+ * 
+ *         cdef list words_unicode
+ *         if unicode_flag:             # <<<<<<<<<<<<<<
+ *             words_unicode = words_vector
+ *             words_unicode = [unicode(word, "utf-8") for word in words_unicode]
+ */
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_unicode_flag); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 100, __pyx_L1_error)
+  if (__pyx_t_6) {
+
+    /* "jiebax/cppjieba.pyx":101
+ *         cdef list words_unicode
+ *         if unicode_flag:
+ *             words_unicode = words_vector             # <<<<<<<<<<<<<<
+ *             words_unicode = [unicode(word, "utf-8") for word in words_unicode]
+ *             return words_unicode
+ */
+    __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(__pyx_v_words_vector); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    if (!(likely(PyList_CheckExact(__pyx_t_1))||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 101, __pyx_L1_error)
+    __pyx_v_words_unicode = ((PyObject*)__pyx_t_1);
+    __pyx_t_1 = 0;
+
+    /* "jiebax/cppjieba.pyx":102
+ *         if unicode_flag:
+ *             words_unicode = words_vector
+ *             words_unicode = [unicode(word, "utf-8") for word in words_unicode]             # <<<<<<<<<<<<<<
+ *             return words_unicode
+ * 
+ */
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_2 = __pyx_v_words_unicode; __Pyx_INCREF(__pyx_t_2); __pyx_t_7 = 0;
+    for (;;) {
+      if (__pyx_t_7 >= PyList_GET_SIZE(__pyx_t_2)) break;
+      #if CYTHON_COMPILING_IN_CPYTHON
+      __pyx_t_4 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_7); __Pyx_INCREF(__pyx_t_4); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 102, __pyx_L1_error)
+      #else
+      __pyx_t_4 = PySequence_ITEM(__pyx_t_2, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 102, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      #endif
+      __Pyx_XDECREF_SET(__pyx_v_word, __pyx_t_4);
+      __pyx_t_4 = 0;
+      __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 102, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __Pyx_INCREF(__pyx_v_word);
+      __Pyx_GIVEREF(__pyx_v_word);
+      PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_v_word);
+      __Pyx_INCREF(__pyx_kp_s_utf_8);
+      __Pyx_GIVEREF(__pyx_kp_s_utf_8);
+      PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_kp_s_utf_8);
+      __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)(&PyUnicode_Type)), __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 102, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_3))) __PYX_ERR(0, 102, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    }
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF_SET(__pyx_v_words_unicode, ((PyObject*)__pyx_t_1));
+    __pyx_t_1 = 0;
+
+    /* "jiebax/cppjieba.pyx":103
+ *             words_unicode = words_vector
+ *             words_unicode = [unicode(word, "utf-8") for word in words_unicode]
+ *             return words_unicode             # <<<<<<<<<<<<<<
+ * 
+ *         return words_vector
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __Pyx_INCREF(__pyx_v_words_unicode);
+    __pyx_r = __pyx_v_words_unicode;
+    goto __pyx_L0;
+
+    /* "jiebax/cppjieba.pyx":100
+ * 
+ *         cdef list words_unicode
+ *         if unicode_flag:             # <<<<<<<<<<<<<<
+ *             words_unicode = words_vector
+ *             words_unicode = [unicode(word, "utf-8") for word in words_unicode]
+ */
+  }
+
+  /* "jiebax/cppjieba.pyx":105
+ *             return words_unicode
  * 
  *         return words_vector             # <<<<<<<<<<<<<<
  * 
- *     def posseg(self, string text):
+ *     def posseg(self, text):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(__pyx_v_words_vector); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 79, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(__pyx_v_words_vector); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "jiebax/cppjieba.pyx":74
+  /* "jiebax/cppjieba.pyx":92
  *     # methods borrow from cppjieba
  * 
- *     def cut(self, string text):             # <<<<<<<<<<<<<<
- *         cdef vector[string] words_vector
- *         self.thisptr.Cut(text, words_vector, 1)
+ *     def cut(self, text, unicode_flag=False):             # <<<<<<<<<<<<<<
+ *         text = self.convert_encode(text)
+ * 
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
   __Pyx_AddTraceback("jiebax.cppjieba.JiebaX.cut", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_words_unicode);
+  __Pyx_XDECREF(__pyx_v_word);
+  __Pyx_XDECREF(__pyx_v_text);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "jiebax/cppjieba.pyx":81
+/* "jiebax/cppjieba.pyx":107
  *         return words_vector
  * 
- *     def posseg(self, string text):             # <<<<<<<<<<<<<<
- *         cdef vector[pair[string, string]] words_pos_vector
- *         self.thisptr.Tag(text, words_pos_vector)
+ *     def posseg(self, text):             # <<<<<<<<<<<<<<
+ *         text = self.convert_encode(text)
+ * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_7posseg(PyObject *__pyx_v_self, PyObject *__pyx_arg_text); /*proto*/
-static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_7posseg(PyObject *__pyx_v_self, PyObject *__pyx_arg_text) {
-  std::string __pyx_v_text;
+static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_9posseg(PyObject *__pyx_v_self, PyObject *__pyx_v_text); /*proto*/
+static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_9posseg(PyObject *__pyx_v_self, PyObject *__pyx_v_text) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("posseg (wrapper)", 0);
-  assert(__pyx_arg_text); {
-    __pyx_v_text = __pyx_convert_string_from_py_std__in_string(__pyx_arg_text); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 81, __pyx_L3_error)
-  }
-  goto __pyx_L4_argument_unpacking_done;
-  __pyx_L3_error:;
-  __Pyx_AddTraceback("jiebax.cppjieba.JiebaX.posseg", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __Pyx_RefNannyFinishContext();
-  return NULL;
-  __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_6jiebax_8cppjieba_6JiebaX_6posseg(((struct __pyx_obj_6jiebax_8cppjieba_JiebaX *)__pyx_v_self), ((std::string)__pyx_v_text));
+  __pyx_r = __pyx_pf_6jiebax_8cppjieba_6JiebaX_8posseg(((struct __pyx_obj_6jiebax_8cppjieba_JiebaX *)__pyx_v_self), ((PyObject *)__pyx_v_text));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_6posseg(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, std::string __pyx_v_text) {
+static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_8posseg(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_text) {
   std::vector<std::pair<std::string,std::string> >  __pyx_v_words_pos_vector;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  std::string __pyx_t_5;
   __Pyx_RefNannySetupContext("posseg", 0);
+  __Pyx_INCREF(__pyx_v_text);
 
-  /* "jiebax/cppjieba.pyx":83
- *     def posseg(self, string text):
+  /* "jiebax/cppjieba.pyx":108
+ * 
+ *     def posseg(self, text):
+ *         text = self.convert_encode(text)             # <<<<<<<<<<<<<<
+ * 
+ *         cdef vector[pair[string, string]] words_pos_vector
+ */
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_convert_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = NULL;
+  if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_3)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_3);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+    }
+  }
+  if (!__pyx_t_3) {
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_text); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+  } else {
+    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 108, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3); __pyx_t_3 = NULL;
+    __Pyx_INCREF(__pyx_v_text);
+    __Pyx_GIVEREF(__pyx_v_text);
+    PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_text);
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF_SET(__pyx_v_text, __pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "jiebax/cppjieba.pyx":111
+ * 
  *         cdef vector[pair[string, string]] words_pos_vector
  *         self.thisptr.Tag(text, words_pos_vector)             # <<<<<<<<<<<<<<
  * 
  *         return words_pos_vector
  */
+  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_text); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 111, __pyx_L1_error)
   try {
-    __pyx_v_self->thisptr->Tag(__pyx_v_text, __pyx_v_words_pos_vector);
+    __pyx_v_self->thisptr->Tag(__pyx_t_5, __pyx_v_words_pos_vector);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 83, __pyx_L1_error)
+    __PYX_ERR(0, 111, __pyx_L1_error)
   }
 
-  /* "jiebax/cppjieba.pyx":85
+  /* "jiebax/cppjieba.pyx":113
  *         self.thisptr.Tag(text, words_pos_vector)
  * 
  *         return words_pos_vector             # <<<<<<<<<<<<<<
  * 
- *     def posseg_nav(self, string text, return_pair=False):
+ *     def posseg_nav(self, text, return_pair=False):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_pair_3c_std_3a__3a_string_2c_std_3a__3a_string_3e___(__pyx_v_words_pos_vector); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_pair_3c_std_3a__3a_string_2c_std_3a__3a_string_3e___(__pyx_v_words_pos_vector); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "jiebax/cppjieba.pyx":81
+  /* "jiebax/cppjieba.pyx":107
  *         return words_vector
  * 
- *     def posseg(self, string text):             # <<<<<<<<<<<<<<
- *         cdef vector[pair[string, string]] words_pos_vector
- *         self.thisptr.Tag(text, words_pos_vector)
+ *     def posseg(self, text):             # <<<<<<<<<<<<<<
+ *         text = self.convert_encode(text)
+ * 
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
   __Pyx_AddTraceback("jiebax.cppjieba.JiebaX.posseg", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_text);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "jiebax/cppjieba.pyx":87
+/* "jiebax/cppjieba.pyx":115
  *         return words_pos_vector
  * 
- *     def posseg_nav(self, string text, return_pair=False):             # <<<<<<<<<<<<<<
- *         cdef vector[pair[string, string]] words_pos_vector
- *         self.thisptr.TagNAV(text, words_pos_vector)
+ *     def posseg_nav(self, text, return_pair=False):             # <<<<<<<<<<<<<<
+ *         text = self.convert_encode(text)
+ * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_9posseg_nav(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_9posseg_nav(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  std::string __pyx_v_text;
+static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_11posseg_nav(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_11posseg_nav(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_text = 0;
   PyObject *__pyx_v_return_pair = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
@@ -1357,7 +1749,7 @@ static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_9posseg_nav(PyObject *__pyx_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "posseg_nav") < 0)) __PYX_ERR(0, 87, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "posseg_nav") < 0)) __PYX_ERR(0, 115, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -1367,60 +1759,103 @@ static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_9posseg_nav(PyObject *__pyx_
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_text = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 87, __pyx_L3_error)
+    __pyx_v_text = values[0];
     __pyx_v_return_pair = values[1];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("posseg_nav", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 87, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("posseg_nav", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 115, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jiebax.cppjieba.JiebaX.posseg_nav", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_6jiebax_8cppjieba_6JiebaX_8posseg_nav(((struct __pyx_obj_6jiebax_8cppjieba_JiebaX *)__pyx_v_self), __pyx_v_text, __pyx_v_return_pair);
+  __pyx_r = __pyx_pf_6jiebax_8cppjieba_6JiebaX_10posseg_nav(((struct __pyx_obj_6jiebax_8cppjieba_JiebaX *)__pyx_v_self), __pyx_v_text, __pyx_v_return_pair);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_8posseg_nav(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, std::string __pyx_v_text, PyObject *__pyx_v_return_pair) {
+static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_10posseg_nav(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_text, PyObject *__pyx_v_return_pair) {
   std::vector<std::pair<std::string,std::string> >  __pyx_v_words_pos_vector;
   std::vector<std::pair<std::string,std::string> > ::iterator __pyx_v_words_pos_vector_iter;
   std::vector<std::string>  __pyx_v_words;
   std::pair<std::string,std::string>  __pyx_v_temp_pair;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
+  PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  std::string __pyx_t_5;
+  int __pyx_t_6;
   __Pyx_RefNannySetupContext("posseg_nav", 0);
+  __Pyx_INCREF(__pyx_v_text);
 
-  /* "jiebax/cppjieba.pyx":89
- *     def posseg_nav(self, string text, return_pair=False):
+  /* "jiebax/cppjieba.pyx":116
+ * 
+ *     def posseg_nav(self, text, return_pair=False):
+ *         text = self.convert_encode(text)             # <<<<<<<<<<<<<<
+ * 
+ *         cdef vector[pair[string, string]] words_pos_vector
+ */
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_convert_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 116, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = NULL;
+  if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_3)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_3);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+    }
+  }
+  if (!__pyx_t_3) {
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_text); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+  } else {
+    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 116, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3); __pyx_t_3 = NULL;
+    __Pyx_INCREF(__pyx_v_text);
+    __Pyx_GIVEREF(__pyx_v_text);
+    PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_text);
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF_SET(__pyx_v_text, __pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "jiebax/cppjieba.pyx":119
+ * 
  *         cdef vector[pair[string, string]] words_pos_vector
  *         self.thisptr.TagNAV(text, words_pos_vector)             # <<<<<<<<<<<<<<
  * 
  *         if return_pair:
  */
+  __pyx_t_5 = __pyx_convert_string_from_py_std__in_string(__pyx_v_text); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 119, __pyx_L1_error)
   try {
-    __pyx_v_self->thisptr->TagNAV(__pyx_v_text, __pyx_v_words_pos_vector);
+    __pyx_v_self->thisptr->TagNAV(__pyx_t_5, __pyx_v_words_pos_vector);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 89, __pyx_L1_error)
+    __PYX_ERR(0, 119, __pyx_L1_error)
   }
 
-  /* "jiebax/cppjieba.pyx":91
+  /* "jiebax/cppjieba.pyx":121
  *         self.thisptr.TagNAV(text, words_pos_vector)
  * 
  *         if return_pair:             # <<<<<<<<<<<<<<
  *             return words_pos_vector
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_return_pair); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 91, __pyx_L1_error)
-  if (__pyx_t_1) {
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_return_pair); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 121, __pyx_L1_error)
+  if (__pyx_t_6) {
 
-    /* "jiebax/cppjieba.pyx":92
+    /* "jiebax/cppjieba.pyx":122
  * 
  *         if return_pair:
  *             return words_pos_vector             # <<<<<<<<<<<<<<
@@ -1428,13 +1863,13 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_8posseg_nav(struct __pyx_obj
  *         # no pair
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = __pyx_convert_vector_to_py_std_3a__3a_pair_3c_std_3a__3a_string_2c_std_3a__3a_string_3e___(__pyx_v_words_pos_vector); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 92, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_r = __pyx_t_2;
-    __pyx_t_2 = 0;
+    __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_pair_3c_std_3a__3a_string_2c_std_3a__3a_string_3e___(__pyx_v_words_pos_vector); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 122, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_r = __pyx_t_1;
+    __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "jiebax/cppjieba.pyx":91
+    /* "jiebax/cppjieba.pyx":121
  *         self.thisptr.TagNAV(text, words_pos_vector)
  * 
  *         if return_pair:             # <<<<<<<<<<<<<<
@@ -1443,7 +1878,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_8posseg_nav(struct __pyx_obj
  */
   }
 
-  /* "jiebax/cppjieba.pyx":95
+  /* "jiebax/cppjieba.pyx":125
  * 
  *         # no pair
  *         cdef vector[pair[string, string]].iterator words_pos_vector_iter = words_pos_vector.begin()             # <<<<<<<<<<<<<<
@@ -1452,7 +1887,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_8posseg_nav(struct __pyx_obj
  */
   __pyx_v_words_pos_vector_iter = __pyx_v_words_pos_vector.begin();
 
-  /* "jiebax/cppjieba.pyx":100
+  /* "jiebax/cppjieba.pyx":130
  * 
  *         # cdef int counter = 0
  *         while words_pos_vector_iter != words_pos_vector.end():             # <<<<<<<<<<<<<<
@@ -1460,10 +1895,10 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_8posseg_nav(struct __pyx_obj
  * 
  */
   while (1) {
-    __pyx_t_1 = ((__pyx_v_words_pos_vector_iter != __pyx_v_words_pos_vector.end()) != 0);
-    if (!__pyx_t_1) break;
+    __pyx_t_6 = ((__pyx_v_words_pos_vector_iter != __pyx_v_words_pos_vector.end()) != 0);
+    if (!__pyx_t_6) break;
 
-    /* "jiebax/cppjieba.pyx":101
+    /* "jiebax/cppjieba.pyx":131
  *         # cdef int counter = 0
  *         while words_pos_vector_iter != words_pos_vector.end():
  *             temp_pair = deref(words_pos_vector_iter)             # <<<<<<<<<<<<<<
@@ -1472,7 +1907,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_8posseg_nav(struct __pyx_obj
  */
     __pyx_v_temp_pair = (*__pyx_v_words_pos_vector_iter);
 
-    /* "jiebax/cppjieba.pyx":103
+    /* "jiebax/cppjieba.pyx":133
  *             temp_pair = deref(words_pos_vector_iter)
  * 
  *             words.push_back(temp_pair.first)             # <<<<<<<<<<<<<<
@@ -1483,10 +1918,10 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_8posseg_nav(struct __pyx_obj
       __pyx_v_words.push_back(__pyx_v_temp_pair.first);
     } catch(...) {
       __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 103, __pyx_L1_error)
+      __PYX_ERR(0, 133, __pyx_L1_error)
     }
 
-    /* "jiebax/cppjieba.pyx":104
+    /* "jiebax/cppjieba.pyx":134
  * 
  *             words.push_back(temp_pair.first)
  *             inc(words_pos_vector_iter)             # <<<<<<<<<<<<<<
@@ -1496,51 +1931,55 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_8posseg_nav(struct __pyx_obj
     (++__pyx_v_words_pos_vector_iter);
   }
 
-  /* "jiebax/cppjieba.pyx":109
+  /* "jiebax/cppjieba.pyx":139
  *         # print counter
  * 
  *         return words             # <<<<<<<<<<<<<<
  * 
- *     def posseg_filter(self, string text, set ifin_set=set(), list startswith_list=list(), return_pair=False):
+ *     def posseg_filter(self, text, set ifin_set=set(), list startswith_list=list(), return_pair=False):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __pyx_convert_vector_to_py_std_3a__3a_string(__pyx_v_words); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 109, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_r = __pyx_t_2;
-  __pyx_t_2 = 0;
+  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(__pyx_v_words); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 139, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "jiebax/cppjieba.pyx":87
+  /* "jiebax/cppjieba.pyx":115
  *         return words_pos_vector
  * 
- *     def posseg_nav(self, string text, return_pair=False):             # <<<<<<<<<<<<<<
- *         cdef vector[pair[string, string]] words_pos_vector
- *         self.thisptr.TagNAV(text, words_pos_vector)
+ *     def posseg_nav(self, text, return_pair=False):             # <<<<<<<<<<<<<<
+ *         text = self.convert_encode(text)
+ * 
  */
 
   /* function exit code */
   __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
   __Pyx_AddTraceback("jiebax.cppjieba.JiebaX.posseg_nav", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_text);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "jiebax/cppjieba.pyx":111
+/* "jiebax/cppjieba.pyx":141
  *         return words
  * 
- *     def posseg_filter(self, string text, set ifin_set=set(), list startswith_list=list(), return_pair=False):             # <<<<<<<<<<<<<<
- *         cdef vector[pair[string, string]] words_pos_vector
- *         cdef vector[string] words_vector
+ *     def posseg_filter(self, text, set ifin_set=set(), list startswith_list=list(), return_pair=False):             # <<<<<<<<<<<<<<
+ *         text = self.convert_encode(text)
+ * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_11posseg_filter(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_11posseg_filter(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  std::string __pyx_v_text;
+static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_13posseg_filter(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_13posseg_filter(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_text = 0;
   PyObject *__pyx_v_ifin_set = 0;
   PyObject *__pyx_v_startswith_list = 0;
   PyObject *__pyx_v_return_pair = 0;
@@ -1550,8 +1989,8 @@ static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_11posseg_filter(PyObject *__
   {
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_text,&__pyx_n_s_ifin_set,&__pyx_n_s_startswith_list,&__pyx_n_s_return_pair,0};
     PyObject* values[4] = {0,0,0,0};
-    values[1] = __pyx_k__4;
-    values[2] = __pyx_k__5;
+    values[1] = __pyx_k__5;
+    values[2] = __pyx_k__6;
     values[3] = ((PyObject *)Py_False);
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
@@ -1586,7 +2025,7 @@ static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_11posseg_filter(PyObject *__
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "posseg_filter") < 0)) __PYX_ERR(0, 111, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "posseg_filter") < 0)) __PYX_ERR(0, 141, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -1598,22 +2037,22 @@ static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_11posseg_filter(PyObject *__
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_text = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 111, __pyx_L3_error)
+    __pyx_v_text = values[0];
     __pyx_v_ifin_set = ((PyObject*)values[1]);
     __pyx_v_startswith_list = ((PyObject*)values[2]);
     __pyx_v_return_pair = values[3];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("posseg_filter", 0, 1, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 111, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("posseg_filter", 0, 1, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 141, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jiebax.cppjieba.JiebaX.posseg_filter", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_ifin_set), (&PySet_Type), 1, "ifin_set", 1))) __PYX_ERR(0, 111, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_startswith_list), (&PyList_Type), 1, "startswith_list", 1))) __PYX_ERR(0, 111, __pyx_L1_error)
-  __pyx_r = __pyx_pf_6jiebax_8cppjieba_6JiebaX_10posseg_filter(((struct __pyx_obj_6jiebax_8cppjieba_JiebaX *)__pyx_v_self), __pyx_v_text, __pyx_v_ifin_set, __pyx_v_startswith_list, __pyx_v_return_pair);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_ifin_set), (&PySet_Type), 1, "ifin_set", 1))) __PYX_ERR(0, 141, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_startswith_list), (&PyList_Type), 1, "startswith_list", 1))) __PYX_ERR(0, 141, __pyx_L1_error)
+  __pyx_r = __pyx_pf_6jiebax_8cppjieba_6JiebaX_12posseg_filter(((struct __pyx_obj_6jiebax_8cppjieba_JiebaX *)__pyx_v_self), __pyx_v_text, __pyx_v_ifin_set, __pyx_v_startswith_list, __pyx_v_return_pair);
 
   /* function exit code */
   goto __pyx_L0;
@@ -1624,7 +2063,7 @@ static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_11posseg_filter(PyObject *__
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_10posseg_filter(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, std::string __pyx_v_text, PyObject *__pyx_v_ifin_set, PyObject *__pyx_v_startswith_list, PyObject *__pyx_v_return_pair) {
+static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12posseg_filter(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_text, PyObject *__pyx_v_ifin_set, PyObject *__pyx_v_startswith_list, PyObject *__pyx_v_return_pair) {
   std::vector<std::pair<std::string,std::string> >  __pyx_v_words_pos_vector;
   std::vector<std::string>  __pyx_v_words_vector;
   std::vector<std::string>  __pyx_v_ifin_list;
@@ -1632,34 +2071,76 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_10posseg_filter(struct __pyx
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  std::vector<std::string>  __pyx_t_2;
-  int __pyx_t_3;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  std::vector<std::string>  __pyx_t_5;
+  int __pyx_t_6;
+  std::string __pyx_t_7;
   __Pyx_RefNannySetupContext("posseg_filter", 0);
+  __Pyx_INCREF(__pyx_v_text);
 
-  /* "jiebax/cppjieba.pyx":115
+  /* "jiebax/cppjieba.pyx":142
+ * 
+ *     def posseg_filter(self, text, set ifin_set=set(), list startswith_list=list(), return_pair=False):
+ *         text = self.convert_encode(text)             # <<<<<<<<<<<<<<
+ * 
+ *         cdef vector[pair[string, string]] words_pos_vector
+ */
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_convert_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = NULL;
+  if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_3)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_3);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+    }
+  }
+  if (!__pyx_t_3) {
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_text); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 142, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+  } else {
+    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 142, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3); __pyx_t_3 = NULL;
+    __Pyx_INCREF(__pyx_v_text);
+    __Pyx_GIVEREF(__pyx_v_text);
+    PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_text);
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 142, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF_SET(__pyx_v_text, __pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "jiebax/cppjieba.pyx":147
  *         cdef vector[string] words_vector
  * 
  *         cdef vector[string] ifin_list = list(ifin_set)             # <<<<<<<<<<<<<<
  * 
  *         cdef int return_pair_int
  */
-  __pyx_t_1 = PySequence_List(__pyx_v_ifin_set); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_1 = PySequence_List(__pyx_v_ifin_set); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_5 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v_ifin_list = __pyx_t_2;
+  __pyx_v_ifin_list = __pyx_t_5;
 
-  /* "jiebax/cppjieba.pyx":118
+  /* "jiebax/cppjieba.pyx":150
  * 
  *         cdef int return_pair_int
  *         if return_pair:             # <<<<<<<<<<<<<<
  *             return_pair_int = 1
  *         else:
  */
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_v_return_pair); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 118, __pyx_L1_error)
-  if (__pyx_t_3) {
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_return_pair); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 150, __pyx_L1_error)
+  if (__pyx_t_6) {
 
-    /* "jiebax/cppjieba.pyx":119
+    /* "jiebax/cppjieba.pyx":151
  *         cdef int return_pair_int
  *         if return_pair:
  *             return_pair_int = 1             # <<<<<<<<<<<<<<
@@ -1668,7 +2149,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_10posseg_filter(struct __pyx
  */
     __pyx_v_return_pair_int = 1;
 
-    /* "jiebax/cppjieba.pyx":118
+    /* "jiebax/cppjieba.pyx":150
  * 
  *         cdef int return_pair_int
  *         if return_pair:             # <<<<<<<<<<<<<<
@@ -1678,7 +2159,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_10posseg_filter(struct __pyx
     goto __pyx_L3;
   }
 
-  /* "jiebax/cppjieba.pyx":121
+  /* "jiebax/cppjieba.pyx":153
  *             return_pair_int = 1
  *         else:
  *             return_pair_int = 0             # <<<<<<<<<<<<<<
@@ -1690,32 +2171,33 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_10posseg_filter(struct __pyx
   }
   __pyx_L3:;
 
-  /* "jiebax/cppjieba.pyx":125
+  /* "jiebax/cppjieba.pyx":157
  *         # print ifin_list
  *         # print startswith_list
  *         self.thisptr.TagFilter(text, words_pos_vector, words_vector, ifin_list, startswith_list, return_pair_int)             # <<<<<<<<<<<<<<
  * 
  *         if return_pair:
  */
-  __pyx_t_2 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_v_startswith_list); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 125, __pyx_L1_error)
+  __pyx_t_7 = __pyx_convert_string_from_py_std__in_string(__pyx_v_text); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 157, __pyx_L1_error)
+  __pyx_t_5 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_v_startswith_list); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 157, __pyx_L1_error)
   try {
-    __pyx_v_self->thisptr->TagFilter(__pyx_v_text, __pyx_v_words_pos_vector, __pyx_v_words_vector, __pyx_v_ifin_list, __pyx_t_2, __pyx_v_return_pair_int);
+    __pyx_v_self->thisptr->TagFilter(__pyx_t_7, __pyx_v_words_pos_vector, __pyx_v_words_vector, __pyx_v_ifin_list, __pyx_t_5, __pyx_v_return_pair_int);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 125, __pyx_L1_error)
+    __PYX_ERR(0, 157, __pyx_L1_error)
   }
 
-  /* "jiebax/cppjieba.pyx":127
+  /* "jiebax/cppjieba.pyx":159
  *         self.thisptr.TagFilter(text, words_pos_vector, words_vector, ifin_list, startswith_list, return_pair_int)
  * 
  *         if return_pair:             # <<<<<<<<<<<<<<
  *             return words_pos_vector
  *         else:
  */
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_v_return_pair); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 127, __pyx_L1_error)
-  if (__pyx_t_3) {
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_return_pair); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 159, __pyx_L1_error)
+  if (__pyx_t_6) {
 
-    /* "jiebax/cppjieba.pyx":128
+    /* "jiebax/cppjieba.pyx":160
  * 
  *         if return_pair:
  *             return words_pos_vector             # <<<<<<<<<<<<<<
@@ -1723,13 +2205,13 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_10posseg_filter(struct __pyx
  *             return words_vector
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_pair_3c_std_3a__3a_string_2c_std_3a__3a_string_3e___(__pyx_v_words_pos_vector); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_pair_3c_std_3a__3a_string_2c_std_3a__3a_string_3e___(__pyx_v_words_pos_vector); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 160, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_r = __pyx_t_1;
     __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "jiebax/cppjieba.pyx":127
+    /* "jiebax/cppjieba.pyx":159
  *         self.thisptr.TagFilter(text, words_pos_vector, words_vector, ifin_list, startswith_list, return_pair_int)
  * 
  *         if return_pair:             # <<<<<<<<<<<<<<
@@ -1738,34 +2220,364 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_10posseg_filter(struct __pyx
  */
   }
 
-  /* "jiebax/cppjieba.pyx":130
+  /* "jiebax/cppjieba.pyx":162
  *             return words_pos_vector
  *         else:
  *             return words_vector             # <<<<<<<<<<<<<<
  * 
- *     # new added methods
+ *     # for backwards compability
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(__pyx_v_words_vector); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 130, __pyx_L1_error)
+    __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_string(__pyx_v_words_vector); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 162, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_r = __pyx_t_1;
     __pyx_t_1 = 0;
     goto __pyx_L0;
   }
 
-  /* "jiebax/cppjieba.pyx":111
+  /* "jiebax/cppjieba.pyx":141
  *         return words
  * 
- *     def posseg_filter(self, string text, set ifin_set=set(), list startswith_list=list(), return_pair=False):             # <<<<<<<<<<<<<<
- *         cdef vector[pair[string, string]] words_pos_vector
- *         cdef vector[string] words_vector
+ *     def posseg_filter(self, text, set ifin_set=set(), list startswith_list=list(), return_pair=False):             # <<<<<<<<<<<<<<
+ *         text = self.convert_encode(text)
+ * 
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
   __Pyx_AddTraceback("jiebax.cppjieba.JiebaX.posseg_filter", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_text);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "jiebax/cppjieba.pyx":166
+ *     # for backwards compability
+ * 
+ *     def cut_docs_multi(self, docs, pos_tags=[], n_threads=1):             # <<<<<<<<<<<<<<
+ *         if n_threads < 2:
+ *             doc_words_list = [self.posseg_nav(doc, return_pair=False) for doc in docs]
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_15cut_docs_multi(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_15cut_docs_multi(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_docs = 0;
+  CYTHON_UNUSED PyObject *__pyx_v_pos_tags = 0;
+  PyObject *__pyx_v_n_threads = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("cut_docs_multi (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_docs,&__pyx_n_s_pos_tags,&__pyx_n_s_n_threads,0};
+    PyObject* values[3] = {0,0,0};
+    values[1] = __pyx_k__7;
+    values[2] = ((PyObject *)__pyx_int_1);
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_docs)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        case  1:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_pos_tags);
+          if (value) { values[1] = value; kw_args--; }
+        }
+        case  2:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_n_threads);
+          if (value) { values[2] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "cut_docs_multi") < 0)) __PYX_ERR(0, 166, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_docs = values[0];
+    __pyx_v_pos_tags = values[1];
+    __pyx_v_n_threads = values[2];
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("cut_docs_multi", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 166, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("jiebax.cppjieba.JiebaX.cut_docs_multi", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_6jiebax_8cppjieba_6JiebaX_14cut_docs_multi(((struct __pyx_obj_6jiebax_8cppjieba_JiebaX *)__pyx_v_self), __pyx_v_docs, __pyx_v_pos_tags, __pyx_v_n_threads);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14cut_docs_multi(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_docs, CYTHON_UNUSED PyObject *__pyx_v_pos_tags, PyObject *__pyx_v_n_threads) {
+  PyObject *__pyx_v_doc_words_list = NULL;
+  PyObject *__pyx_v_doc = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_t_2;
+  PyObject *__pyx_t_3 = NULL;
+  Py_ssize_t __pyx_t_4;
+  PyObject *(*__pyx_t_5)(PyObject *);
+  PyObject *__pyx_t_6 = NULL;
+  PyObject *__pyx_t_7 = NULL;
+  PyObject *__pyx_t_8 = NULL;
+  PyObject *__pyx_t_9 = NULL;
+  __Pyx_RefNannySetupContext("cut_docs_multi", 0);
+
+  /* "jiebax/cppjieba.pyx":167
+ * 
+ *     def cut_docs_multi(self, docs, pos_tags=[], n_threads=1):
+ *         if n_threads < 2:             # <<<<<<<<<<<<<<
+ *             doc_words_list = [self.posseg_nav(doc, return_pair=False) for doc in docs]
+ *         else:
+ */
+  __pyx_t_1 = PyObject_RichCompare(__pyx_v_n_threads, __pyx_int_2, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 167, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 167, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (__pyx_t_2) {
+
+    /* "jiebax/cppjieba.pyx":168
+ *     def cut_docs_multi(self, docs, pos_tags=[], n_threads=1):
+ *         if n_threads < 2:
+ *             doc_words_list = [self.posseg_nav(doc, return_pair=False) for doc in docs]             # <<<<<<<<<<<<<<
+ *         else:
+ *             raise Exception("no multithread implementation")
+ */
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 168, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    if (likely(PyList_CheckExact(__pyx_v_docs)) || PyTuple_CheckExact(__pyx_v_docs)) {
+      __pyx_t_3 = __pyx_v_docs; __Pyx_INCREF(__pyx_t_3); __pyx_t_4 = 0;
+      __pyx_t_5 = NULL;
+    } else {
+      __pyx_t_4 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_v_docs); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 168, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_5 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 168, __pyx_L1_error)
+    }
+    for (;;) {
+      if (likely(!__pyx_t_5)) {
+        if (likely(PyList_CheckExact(__pyx_t_3))) {
+          if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_3)) break;
+          #if CYTHON_COMPILING_IN_CPYTHON
+          __pyx_t_6 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_6); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 168, __pyx_L1_error)
+          #else
+          __pyx_t_6 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 168, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_6);
+          #endif
+        } else {
+          if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
+          #if CYTHON_COMPILING_IN_CPYTHON
+          __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_6); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 168, __pyx_L1_error)
+          #else
+          __pyx_t_6 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 168, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_6);
+          #endif
+        }
+      } else {
+        __pyx_t_6 = __pyx_t_5(__pyx_t_3);
+        if (unlikely(!__pyx_t_6)) {
+          PyObject* exc_type = PyErr_Occurred();
+          if (exc_type) {
+            if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+            else __PYX_ERR(0, 168, __pyx_L1_error)
+          }
+          break;
+        }
+        __Pyx_GOTREF(__pyx_t_6);
+      }
+      __Pyx_XDECREF_SET(__pyx_v_doc, __pyx_t_6);
+      __pyx_t_6 = 0;
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_posseg_nav); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 168, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __pyx_t_7 = PyTuple_New(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 168, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_INCREF(__pyx_v_doc);
+      __Pyx_GIVEREF(__pyx_v_doc);
+      PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_v_doc);
+      __pyx_t_8 = PyDict_New(); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 168, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_8);
+      if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_return_pair, Py_False) < 0) __PYX_ERR(0, 168, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_7, __pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 168, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_9);
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_9))) __PYX_ERR(0, 168, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    }
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_v_doc_words_list = ((PyObject*)__pyx_t_1);
+    __pyx_t_1 = 0;
+
+    /* "jiebax/cppjieba.pyx":167
+ * 
+ *     def cut_docs_multi(self, docs, pos_tags=[], n_threads=1):
+ *         if n_threads < 2:             # <<<<<<<<<<<<<<
+ *             doc_words_list = [self.posseg_nav(doc, return_pair=False) for doc in docs]
+ *         else:
+ */
+    goto __pyx_L3;
+  }
+
+  /* "jiebax/cppjieba.pyx":170
+ *             doc_words_list = [self.posseg_nav(doc, return_pair=False) for doc in docs]
+ *         else:
+ *             raise Exception("no multithread implementation")             # <<<<<<<<<<<<<<
+ * 
+ *         return doc_words_list
+ */
+  /*else*/ {
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_Exception, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 170, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __PYX_ERR(0, 170, __pyx_L1_error)
+  }
+  __pyx_L3:;
+
+  /* "jiebax/cppjieba.pyx":172
+ *             raise Exception("no multithread implementation")
+ * 
+ *         return doc_words_list             # <<<<<<<<<<<<<<
+ * 
+ *     def cut_docs(self, *args, **kwargs):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_doc_words_list);
+  __pyx_r = __pyx_v_doc_words_list;
+  goto __pyx_L0;
+
+  /* "jiebax/cppjieba.pyx":166
+ *     # for backwards compability
+ * 
+ *     def cut_docs_multi(self, docs, pos_tags=[], n_threads=1):             # <<<<<<<<<<<<<<
+ *         if n_threads < 2:
+ *             doc_words_list = [self.posseg_nav(doc, return_pair=False) for doc in docs]
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_XDECREF(__pyx_t_9);
+  __Pyx_AddTraceback("jiebax.cppjieba.JiebaX.cut_docs_multi", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_doc_words_list);
+  __Pyx_XDECREF(__pyx_v_doc);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "jiebax/cppjieba.pyx":174
+ *         return doc_words_list
+ * 
+ *     def cut_docs(self, *args, **kwargs):             # <<<<<<<<<<<<<<
+ *         return self.cut_docs_multi(*args, n_threads=1, **kwargs)
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_17cut_docs(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_17cut_docs(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_args = 0;
+  PyObject *__pyx_v_kwargs = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("cut_docs (wrapper)", 0);
+  if (unlikely(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "cut_docs", 1))) return NULL;
+  __pyx_v_kwargs = (__pyx_kwds) ? PyDict_Copy(__pyx_kwds) : PyDict_New(); if (unlikely(!__pyx_v_kwargs)) return NULL;
+  __Pyx_GOTREF(__pyx_v_kwargs);
+  __Pyx_INCREF(__pyx_args);
+  __pyx_v_args = __pyx_args;
+  __pyx_r = __pyx_pf_6jiebax_8cppjieba_6JiebaX_16cut_docs(((struct __pyx_obj_6jiebax_8cppjieba_JiebaX *)__pyx_v_self), __pyx_v_args, __pyx_v_kwargs);
+
+  /* function exit code */
+  __Pyx_XDECREF(__pyx_v_args);
+  __Pyx_XDECREF(__pyx_v_kwargs);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_16cut_docs(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_args, PyObject *__pyx_v_kwargs) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  __Pyx_RefNannySetupContext("cut_docs", 0);
+
+  /* "jiebax/cppjieba.pyx":175
+ * 
+ *     def cut_docs(self, *args, **kwargs):
+ *         return self.cut_docs_multi(*args, n_threads=1, **kwargs)             # <<<<<<<<<<<<<<
+ * 
+ *     # new added methods
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_cut_docs_multi); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 175, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 175, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_n_threads, __pyx_int_1) < 0) __PYX_ERR(0, 175, __pyx_L1_error)
+  __pyx_t_2 = __pyx_t_3;
+  __pyx_t_3 = 0;
+  if (__Pyx_MergeKeywords(__pyx_t_2, __pyx_v_kwargs) < 0) __PYX_ERR(0, 175, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_v_args, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 175, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_r = __pyx_t_3;
+  __pyx_t_3 = 0;
+  goto __pyx_L0;
+
+  /* "jiebax/cppjieba.pyx":174
+ *         return doc_words_list
+ * 
+ *     def cut_docs(self, *args, **kwargs):             # <<<<<<<<<<<<<<
+ *         return self.cut_docs_multi(*args, n_threads=1, **kwargs)
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_AddTraceback("jiebax.cppjieba.JiebaX.cut_docs", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -1773,7 +2585,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_10posseg_filter(struct __pyx
   return __pyx_r;
 }
 
-/* "jiebax/cppjieba.pyx":134
+/* "jiebax/cppjieba.pyx":179
  *     # new added methods
  * 
  *     def _DEPRE_posseg_filter(self, string text, list startswith_list=[], set ifin_set=set(), return_pair=False):             # <<<<<<<<<<<<<<
@@ -1782,8 +2594,8 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_10posseg_filter(struct __pyx
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_13_DEPRE_posseg_filter(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_13_DEPRE_posseg_filter(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_19_DEPRE_posseg_filter(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_19_DEPRE_posseg_filter(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   std::string __pyx_v_text;
   PyObject *__pyx_v_startswith_list = 0;
   PyObject *__pyx_v_ifin_set = 0;
@@ -1794,8 +2606,8 @@ static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_13_DEPRE_posseg_filter(PyObj
   {
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_text,&__pyx_n_s_startswith_list,&__pyx_n_s_ifin_set,&__pyx_n_s_return_pair,0};
     PyObject* values[4] = {0,0,0,0};
-    values[1] = __pyx_k__6;
-    values[2] = __pyx_k__7;
+    values[1] = __pyx_k__9;
+    values[2] = __pyx_k__10;
     values[3] = ((PyObject *)Py_False);
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
@@ -1830,7 +2642,7 @@ static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_13_DEPRE_posseg_filter(PyObj
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_DEPRE_posseg_filter") < 0)) __PYX_ERR(0, 134, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_DEPRE_posseg_filter") < 0)) __PYX_ERR(0, 179, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -1842,22 +2654,22 @@ static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_13_DEPRE_posseg_filter(PyObj
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_text = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 134, __pyx_L3_error)
+    __pyx_v_text = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 179, __pyx_L3_error)
     __pyx_v_startswith_list = ((PyObject*)values[1]);
     __pyx_v_ifin_set = ((PyObject*)values[2]);
     __pyx_v_return_pair = values[3];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_DEPRE_posseg_filter", 0, 1, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 134, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_DEPRE_posseg_filter", 0, 1, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 179, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jiebax.cppjieba.JiebaX._DEPRE_posseg_filter", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_startswith_list), (&PyList_Type), 1, "startswith_list", 1))) __PYX_ERR(0, 134, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_ifin_set), (&PySet_Type), 1, "ifin_set", 1))) __PYX_ERR(0, 134, __pyx_L1_error)
-  __pyx_r = __pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(((struct __pyx_obj_6jiebax_8cppjieba_JiebaX *)__pyx_v_self), __pyx_v_text, __pyx_v_startswith_list, __pyx_v_ifin_set, __pyx_v_return_pair);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_startswith_list), (&PyList_Type), 1, "startswith_list", 1))) __PYX_ERR(0, 179, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_ifin_set), (&PySet_Type), 1, "ifin_set", 1))) __PYX_ERR(0, 179, __pyx_L1_error)
+  __pyx_r = __pyx_pf_6jiebax_8cppjieba_6JiebaX_18_DEPRE_posseg_filter(((struct __pyx_obj_6jiebax_8cppjieba_JiebaX *)__pyx_v_self), __pyx_v_text, __pyx_v_startswith_list, __pyx_v_ifin_set, __pyx_v_return_pair);
 
   /* function exit code */
   goto __pyx_L0;
@@ -1868,7 +2680,7 @@ static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_13_DEPRE_posseg_filter(PyObj
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, std::string __pyx_v_text, PyObject *__pyx_v_startswith_list, PyObject *__pyx_v_ifin_set, PyObject *__pyx_v_return_pair) {
+static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_18_DEPRE_posseg_filter(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, std::string __pyx_v_text, PyObject *__pyx_v_startswith_list, PyObject *__pyx_v_ifin_set, PyObject *__pyx_v_return_pair) {
   std::string __pyx_v_word;
   PyObject *__pyx_v_tag = 0;
   PyObject *__pyx_v_return_list = 0;
@@ -1891,19 +2703,19 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
   int __pyx_t_13;
   __Pyx_RefNannySetupContext("_DEPRE_posseg_filter", 0);
 
-  /* "jiebax/cppjieba.pyx":143
+  /* "jiebax/cppjieba.pyx":188
  *         cdef str tag
  * 
  *         cdef list return_list = []             # <<<<<<<<<<<<<<
  *         cdef int append_flag = 0
  * 
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 143, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_return_list = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "jiebax/cppjieba.pyx":144
+  /* "jiebax/cppjieba.pyx":189
  * 
  *         cdef list return_list = []
  *         cdef int append_flag = 0             # <<<<<<<<<<<<<<
@@ -1912,16 +2724,16 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
  */
   __pyx_v_append_flag = 0;
 
-  /* "jiebax/cppjieba.pyx":148
+  /* "jiebax/cppjieba.pyx":193
  *         # print ifin_set
  * 
  *         for word, tag in self.posseg(text):             # <<<<<<<<<<<<<<
  *             append_flag = 0
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_posseg); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_posseg); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_text); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_3 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_text); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_2))) {
@@ -1934,17 +2746,17 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
     }
   }
   if (!__pyx_t_4) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
-    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 148, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_t_3);
     __pyx_t_3 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
@@ -1953,9 +2765,9 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
     __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_6 = 0;
     __pyx_t_7 = NULL;
   } else {
-    __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
+    __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 148, __pyx_L1_error)
+    __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 193, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
@@ -1963,17 +2775,17 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
       if (likely(PyList_CheckExact(__pyx_t_2))) {
         if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 148, __pyx_L1_error)
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 193, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
         if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 148, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 193, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
@@ -1983,7 +2795,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 148, __pyx_L1_error)
+          else __PYX_ERR(0, 193, __pyx_L1_error)
         }
         break;
       }
@@ -1999,7 +2811,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
       if (unlikely(size != 2)) {
         if (size > 2) __Pyx_RaiseTooManyValuesError(2);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 148, __pyx_L1_error)
+        __PYX_ERR(0, 193, __pyx_L1_error)
       }
       #if CYTHON_COMPILING_IN_CPYTHON
       if (likely(PyTuple_CheckExact(sequence))) {
@@ -2012,15 +2824,15 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
       __Pyx_INCREF(__pyx_t_5);
       __Pyx_INCREF(__pyx_t_3);
       #else
-      __pyx_t_5 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 148, __pyx_L1_error)
+      __pyx_t_5 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 193, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 148, __pyx_L1_error)
+      __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 193, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       #endif
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 148, __pyx_L1_error)
+      __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 193, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_8 = Py_TYPE(__pyx_t_4)->tp_iternext;
@@ -2028,7 +2840,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
       __Pyx_GOTREF(__pyx_t_5);
       index = 1; __pyx_t_3 = __pyx_t_8(__pyx_t_4); if (unlikely(!__pyx_t_3)) goto __pyx_L5_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_3);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_8(__pyx_t_4), 2) < 0) __PYX_ERR(0, 148, __pyx_L1_error)
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_8(__pyx_t_4), 2) < 0) __PYX_ERR(0, 193, __pyx_L1_error)
       __pyx_t_8 = NULL;
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       goto __pyx_L6_unpacking_done;
@@ -2036,17 +2848,17 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_t_8 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 148, __pyx_L1_error)
+      __PYX_ERR(0, 193, __pyx_L1_error)
       __pyx_L6_unpacking_done:;
     }
-    __pyx_t_9 = __pyx_convert_string_from_py_std__in_string(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 148, __pyx_L1_error)
+    __pyx_t_9 = __pyx_convert_string_from_py_std__in_string(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (!(likely(PyString_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 148, __pyx_L1_error)
+    if (!(likely(PyString_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 193, __pyx_L1_error)
     __pyx_v_word = __pyx_t_9;
     __Pyx_XDECREF_SET(__pyx_v_tag, ((PyObject*)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "jiebax/cppjieba.pyx":149
+    /* "jiebax/cppjieba.pyx":194
  * 
  *         for word, tag in self.posseg(text):
  *             append_flag = 0             # <<<<<<<<<<<<<<
@@ -2055,18 +2867,18 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
  */
     __pyx_v_append_flag = 0;
 
-    /* "jiebax/cppjieba.pyx":152
+    /* "jiebax/cppjieba.pyx":197
  * 
  *             # if ifin_cppset.find(tag) != cppset_end:
  *             if tag in ifin_set:             # <<<<<<<<<<<<<<
  *                 append_flag = 1
  * 
  */
-    __pyx_t_10 = (__Pyx_PySequence_ContainsTF(__pyx_v_tag, __pyx_v_ifin_set, Py_EQ)); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 152, __pyx_L1_error)
+    __pyx_t_10 = (__Pyx_PySequence_ContainsTF(__pyx_v_tag, __pyx_v_ifin_set, Py_EQ)); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 197, __pyx_L1_error)
     __pyx_t_11 = (__pyx_t_10 != 0);
     if (__pyx_t_11) {
 
-      /* "jiebax/cppjieba.pyx":153
+      /* "jiebax/cppjieba.pyx":198
  *             # if ifin_cppset.find(tag) != cppset_end:
  *             if tag in ifin_set:
  *                 append_flag = 1             # <<<<<<<<<<<<<<
@@ -2075,7 +2887,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
  */
       __pyx_v_append_flag = 1;
 
-      /* "jiebax/cppjieba.pyx":152
+      /* "jiebax/cppjieba.pyx":197
  * 
  *             # if ifin_cppset.find(tag) != cppset_end:
  *             if tag in ifin_set:             # <<<<<<<<<<<<<<
@@ -2085,7 +2897,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
       goto __pyx_L7;
     }
 
-    /* "jiebax/cppjieba.pyx":156
+    /* "jiebax/cppjieba.pyx":201
  * 
  *             else:
  *                 for stag in startswith_list:             # <<<<<<<<<<<<<<
@@ -2095,21 +2907,21 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
     /*else*/ {
       if (unlikely(__pyx_v_startswith_list == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-        __PYX_ERR(0, 156, __pyx_L1_error)
+        __PYX_ERR(0, 201, __pyx_L1_error)
       }
       __pyx_t_1 = __pyx_v_startswith_list; __Pyx_INCREF(__pyx_t_1); __pyx_t_12 = 0;
       for (;;) {
         if (__pyx_t_12 >= PyList_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_12); __Pyx_INCREF(__pyx_t_3); __pyx_t_12++; if (unlikely(0 < 0)) __PYX_ERR(0, 156, __pyx_L1_error)
+        __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_12); __Pyx_INCREF(__pyx_t_3); __pyx_t_12++; if (unlikely(0 < 0)) __PYX_ERR(0, 201, __pyx_L1_error)
         #else
-        __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_12); __pyx_t_12++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 156, __pyx_L1_error)
+        __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_12); __pyx_t_12++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 201, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         #endif
         __Pyx_XDECREF_SET(__pyx_v_stag, __pyx_t_3);
         __pyx_t_3 = 0;
 
-        /* "jiebax/cppjieba.pyx":157
+        /* "jiebax/cppjieba.pyx":202
  *             else:
  *                 for stag in startswith_list:
  *                     if tag.startswith(stag):             # <<<<<<<<<<<<<<
@@ -2118,12 +2930,12 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
  */
         if (unlikely(__pyx_v_tag == Py_None)) {
           PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%s'", "startswith");
-          __PYX_ERR(0, 157, __pyx_L1_error)
+          __PYX_ERR(0, 202, __pyx_L1_error)
         }
-        __pyx_t_11 = __Pyx_PyStr_Tailmatch(__pyx_v_tag, __pyx_v_stag, 0, PY_SSIZE_T_MAX, -1); if (unlikely(__pyx_t_11 == -1)) __PYX_ERR(0, 157, __pyx_L1_error)
+        __pyx_t_11 = __Pyx_PyStr_Tailmatch(__pyx_v_tag, __pyx_v_stag, 0, PY_SSIZE_T_MAX, -1); if (unlikely(__pyx_t_11 == -1)) __PYX_ERR(0, 202, __pyx_L1_error)
         if ((__pyx_t_11 != 0)) {
 
-          /* "jiebax/cppjieba.pyx":158
+          /* "jiebax/cppjieba.pyx":203
  *                 for stag in startswith_list:
  *                     if tag.startswith(stag):
  *                         append_flag = 1             # <<<<<<<<<<<<<<
@@ -2132,7 +2944,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
  */
           __pyx_v_append_flag = 1;
 
-          /* "jiebax/cppjieba.pyx":159
+          /* "jiebax/cppjieba.pyx":204
  *                     if tag.startswith(stag):
  *                         append_flag = 1
  *                         break             # <<<<<<<<<<<<<<
@@ -2141,7 +2953,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
  */
           goto __pyx_L9_break;
 
-          /* "jiebax/cppjieba.pyx":157
+          /* "jiebax/cppjieba.pyx":202
  *             else:
  *                 for stag in startswith_list:
  *                     if tag.startswith(stag):             # <<<<<<<<<<<<<<
@@ -2150,7 +2962,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
  */
         }
 
-        /* "jiebax/cppjieba.pyx":156
+        /* "jiebax/cppjieba.pyx":201
  * 
  *             else:
  *                 for stag in startswith_list:             # <<<<<<<<<<<<<<
@@ -2163,7 +2975,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
     }
     __pyx_L7:;
 
-    /* "jiebax/cppjieba.pyx":161
+    /* "jiebax/cppjieba.pyx":206
  *                         break
  * 
  *             if append_flag > 0:             # <<<<<<<<<<<<<<
@@ -2173,26 +2985,26 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
     __pyx_t_11 = ((__pyx_v_append_flag > 0) != 0);
     if (__pyx_t_11) {
 
-      /* "jiebax/cppjieba.pyx":162
+      /* "jiebax/cppjieba.pyx":207
  * 
  *             if append_flag > 0:
  *                 if return_pair:             # <<<<<<<<<<<<<<
  *                     return_list.append( (word, tag) )
  *                 else:
  */
-      __pyx_t_11 = __Pyx_PyObject_IsTrue(__pyx_v_return_pair); if (unlikely(__pyx_t_11 < 0)) __PYX_ERR(0, 162, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyObject_IsTrue(__pyx_v_return_pair); if (unlikely(__pyx_t_11 < 0)) __PYX_ERR(0, 207, __pyx_L1_error)
       if (__pyx_t_11) {
 
-        /* "jiebax/cppjieba.pyx":163
+        /* "jiebax/cppjieba.pyx":208
  *             if append_flag > 0:
  *                 if return_pair:
  *                     return_list.append( (word, tag) )             # <<<<<<<<<<<<<<
  *                 else:
  *                     return_list.append( word )
  */
-        __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_word); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 163, __pyx_L1_error)
+        __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_word); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 208, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 163, __pyx_L1_error)
+        __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 208, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_GIVEREF(__pyx_t_1);
         PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
@@ -2200,10 +3012,10 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
         __Pyx_GIVEREF(__pyx_v_tag);
         PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_v_tag);
         __pyx_t_1 = 0;
-        __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_return_list, __pyx_t_3); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 163, __pyx_L1_error)
+        __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_return_list, __pyx_t_3); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 208, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-        /* "jiebax/cppjieba.pyx":162
+        /* "jiebax/cppjieba.pyx":207
  * 
  *             if append_flag > 0:
  *                 if return_pair:             # <<<<<<<<<<<<<<
@@ -2213,7 +3025,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
         goto __pyx_L12;
       }
 
-      /* "jiebax/cppjieba.pyx":165
+      /* "jiebax/cppjieba.pyx":210
  *                     return_list.append( (word, tag) )
  *                 else:
  *                     return_list.append( word )             # <<<<<<<<<<<<<<
@@ -2221,14 +3033,14 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
  *         return return_list
  */
       /*else*/ {
-        __pyx_t_3 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_word); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 165, __pyx_L1_error)
+        __pyx_t_3 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_word); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 210, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_return_list, __pyx_t_3); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 165, __pyx_L1_error)
+        __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_return_list, __pyx_t_3); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 210, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       }
       __pyx_L12:;
 
-      /* "jiebax/cppjieba.pyx":161
+      /* "jiebax/cppjieba.pyx":206
  *                         break
  * 
  *             if append_flag > 0:             # <<<<<<<<<<<<<<
@@ -2237,7 +3049,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
  */
     }
 
-    /* "jiebax/cppjieba.pyx":148
+    /* "jiebax/cppjieba.pyx":193
  *         # print ifin_set
  * 
  *         for word, tag in self.posseg(text):             # <<<<<<<<<<<<<<
@@ -2247,7 +3059,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "jiebax/cppjieba.pyx":167
+  /* "jiebax/cppjieba.pyx":212
  *                     return_list.append( word )
  * 
  *         return return_list             # <<<<<<<<<<<<<<
@@ -2259,7 +3071,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
   __pyx_r = __pyx_v_return_list;
   goto __pyx_L0;
 
-  /* "jiebax/cppjieba.pyx":134
+  /* "jiebax/cppjieba.pyx":179
  *     # new added methods
  * 
  *     def _DEPRE_posseg_filter(self, string text, list startswith_list=[], set ifin_set=set(), return_pair=False):             # <<<<<<<<<<<<<<
@@ -2285,7 +3097,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
   return __pyx_r;
 }
 
-/* "jiebax/cppjieba.pyx":169
+/* "jiebax/cppjieba.pyx":214
  *         return return_list
  * 
  *     def _DEPRE_posseg_nav(self, string text, return_pair=False):             # <<<<<<<<<<<<<<
@@ -2294,8 +3106,8 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12_DEPRE_posseg_filter(struc
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_15_DEPRE_posseg_nav(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_15_DEPRE_posseg_nav(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_21_DEPRE_posseg_nav(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_21_DEPRE_posseg_nav(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   std::string __pyx_v_text;
   PyObject *__pyx_v_return_pair = 0;
   PyObject *__pyx_r = 0;
@@ -2326,7 +3138,7 @@ static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_15_DEPRE_posseg_nav(PyObject
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_DEPRE_posseg_nav") < 0)) __PYX_ERR(0, 169, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_DEPRE_posseg_nav") < 0)) __PYX_ERR(0, 214, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -2336,25 +3148,25 @@ static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_15_DEPRE_posseg_nav(PyObject
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_text = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 169, __pyx_L3_error)
+    __pyx_v_text = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 214, __pyx_L3_error)
     __pyx_v_return_pair = values[1];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_DEPRE_posseg_nav", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 169, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_DEPRE_posseg_nav", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 214, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jiebax.cppjieba.JiebaX._DEPRE_posseg_nav", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(((struct __pyx_obj_6jiebax_8cppjieba_JiebaX *)__pyx_v_self), __pyx_v_text, __pyx_v_return_pair);
+  __pyx_r = __pyx_pf_6jiebax_8cppjieba_6JiebaX_20_DEPRE_posseg_nav(((struct __pyx_obj_6jiebax_8cppjieba_JiebaX *)__pyx_v_self), __pyx_v_text, __pyx_v_return_pair);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, std::string __pyx_v_text, PyObject *__pyx_v_return_pair) {
+static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_20_DEPRE_posseg_nav(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, std::string __pyx_v_text, PyObject *__pyx_v_return_pair) {
   std::string __pyx_v_word;
   std::string __pyx_v_tag;
   PyObject *__pyx_v_return_list = 0;
@@ -2375,38 +3187,38 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
   int __pyx_t_13;
   __Pyx_RefNannySetupContext("_DEPRE_posseg_nav", 0);
 
-  /* "jiebax/cppjieba.pyx":174
+  /* "jiebax/cppjieba.pyx":219
  *         cdef string word
  *         cdef string tag
  *         cdef list return_list = []             # <<<<<<<<<<<<<<
  * 
  *         if return_pair:
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 174, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_return_list = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "jiebax/cppjieba.pyx":176
+  /* "jiebax/cppjieba.pyx":221
  *         cdef list return_list = []
  * 
  *         if return_pair:             # <<<<<<<<<<<<<<
  *             for word, tag in self.posseg(text):
  *                 if tag.startswith("n") or tag == "a" or tag == "v":
  */
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_return_pair); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 176, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_return_pair); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 221, __pyx_L1_error)
   if (__pyx_t_2) {
 
-    /* "jiebax/cppjieba.pyx":177
+    /* "jiebax/cppjieba.pyx":222
  * 
  *         if return_pair:
  *             for word, tag in self.posseg(text):             # <<<<<<<<<<<<<<
  *                 if tag.startswith("n") or tag == "a" or tag == "v":
  *                     return_list.append((word, tag))
  */
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_posseg); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 177, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_posseg); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 222, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_text); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 177, __pyx_L1_error)
+    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_text); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 222, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_5 = NULL;
     if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_3))) {
@@ -2419,17 +3231,17 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
       }
     }
     if (!__pyx_t_5) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 222, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else {
-      __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 177, __pyx_L1_error)
+      __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 222, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5); __pyx_t_5 = NULL;
       __Pyx_GIVEREF(__pyx_t_4);
       PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_t_4);
       __pyx_t_4 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 222, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     }
@@ -2438,9 +3250,9 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
       __pyx_t_3 = __pyx_t_1; __Pyx_INCREF(__pyx_t_3); __pyx_t_7 = 0;
       __pyx_t_8 = NULL;
     } else {
-      __pyx_t_7 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 177, __pyx_L1_error)
+      __pyx_t_7 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 222, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_8 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 177, __pyx_L1_error)
+      __pyx_t_8 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 222, __pyx_L1_error)
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     for (;;) {
@@ -2448,17 +3260,17 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
         if (likely(PyList_CheckExact(__pyx_t_3))) {
           if (__pyx_t_7 >= PyList_GET_SIZE(__pyx_t_3)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_7); __Pyx_INCREF(__pyx_t_1); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 177, __pyx_L1_error)
+          __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_7); __Pyx_INCREF(__pyx_t_1); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 222, __pyx_L1_error)
           #else
-          __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
+          __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 222, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
           #endif
         } else {
           if (__pyx_t_7 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_7); __Pyx_INCREF(__pyx_t_1); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 177, __pyx_L1_error)
+          __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_7); __Pyx_INCREF(__pyx_t_1); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 222, __pyx_L1_error)
           #else
-          __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
+          __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 222, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
           #endif
         }
@@ -2468,7 +3280,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 177, __pyx_L1_error)
+            else __PYX_ERR(0, 222, __pyx_L1_error)
           }
           break;
         }
@@ -2484,7 +3296,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
         if (unlikely(size != 2)) {
           if (size > 2) __Pyx_RaiseTooManyValuesError(2);
           else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-          __PYX_ERR(0, 177, __pyx_L1_error)
+          __PYX_ERR(0, 222, __pyx_L1_error)
         }
         #if CYTHON_COMPILING_IN_CPYTHON
         if (likely(PyTuple_CheckExact(sequence))) {
@@ -2497,15 +3309,15 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
         __Pyx_INCREF(__pyx_t_6);
         __Pyx_INCREF(__pyx_t_4);
         #else
-        __pyx_t_6 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 177, __pyx_L1_error)
+        __pyx_t_6 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 222, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_4 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 177, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 222, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       } else {
         Py_ssize_t index = -1;
-        __pyx_t_5 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 177, __pyx_L1_error)
+        __pyx_t_5 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 222, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __pyx_t_9 = Py_TYPE(__pyx_t_5)->tp_iternext;
@@ -2513,7 +3325,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
         __Pyx_GOTREF(__pyx_t_6);
         index = 1; __pyx_t_4 = __pyx_t_9(__pyx_t_5); if (unlikely(!__pyx_t_4)) goto __pyx_L6_unpacking_failed;
         __Pyx_GOTREF(__pyx_t_4);
-        if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_5), 2) < 0) __PYX_ERR(0, 177, __pyx_L1_error)
+        if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_5), 2) < 0) __PYX_ERR(0, 222, __pyx_L1_error)
         __pyx_t_9 = NULL;
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         goto __pyx_L7_unpacking_done;
@@ -2521,26 +3333,26 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         __pyx_t_9 = NULL;
         if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-        __PYX_ERR(0, 177, __pyx_L1_error)
+        __PYX_ERR(0, 222, __pyx_L1_error)
         __pyx_L7_unpacking_done:;
       }
-      __pyx_t_10 = __pyx_convert_string_from_py_std__in_string(__pyx_t_6); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 177, __pyx_L1_error)
+      __pyx_t_10 = __pyx_convert_string_from_py_std__in_string(__pyx_t_6); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 222, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_11 = __pyx_convert_string_from_py_std__in_string(__pyx_t_4); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 177, __pyx_L1_error)
+      __pyx_t_11 = __pyx_convert_string_from_py_std__in_string(__pyx_t_4); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 222, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_v_word = __pyx_t_10;
       __pyx_v_tag = __pyx_t_11;
 
-      /* "jiebax/cppjieba.pyx":178
+      /* "jiebax/cppjieba.pyx":223
  *         if return_pair:
  *             for word, tag in self.posseg(text):
  *                 if tag.startswith("n") or tag == "a" or tag == "v":             # <<<<<<<<<<<<<<
  *                     return_list.append((word, tag))
  *         else:
  */
-      __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_tag); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 178, __pyx_L1_error)
+      __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_tag); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 223, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_12 = __Pyx_PyBytes_Tailmatch(__pyx_t_1, __pyx_n_s_n, 0, PY_SSIZE_T_MAX, -1); if (unlikely(__pyx_t_12 == -1)) __PYX_ERR(0, 178, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyBytes_Tailmatch(__pyx_t_1, __pyx_n_s_n, 0, PY_SSIZE_T_MAX, -1); if (unlikely(__pyx_t_12 == -1)) __PYX_ERR(0, 223, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       if (!(__pyx_t_12 != 0)) {
       } else {
@@ -2558,18 +3370,18 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
       __pyx_L9_bool_binop_done:;
       if (__pyx_t_2) {
 
-        /* "jiebax/cppjieba.pyx":179
+        /* "jiebax/cppjieba.pyx":224
  *             for word, tag in self.posseg(text):
  *                 if tag.startswith("n") or tag == "a" or tag == "v":
  *                     return_list.append((word, tag))             # <<<<<<<<<<<<<<
  *         else:
  *             for word, tag in self.posseg(text):
  */
-        __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_word); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 179, __pyx_L1_error)
+        __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_word); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 224, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_tag); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 179, __pyx_L1_error)
+        __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_tag); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 224, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
-        __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 179, __pyx_L1_error)
+        __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 224, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_GIVEREF(__pyx_t_1);
         PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1);
@@ -2577,10 +3389,10 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
         PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_4);
         __pyx_t_1 = 0;
         __pyx_t_4 = 0;
-        __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_return_list, __pyx_t_6); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 179, __pyx_L1_error)
+        __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_return_list, __pyx_t_6); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 224, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-        /* "jiebax/cppjieba.pyx":178
+        /* "jiebax/cppjieba.pyx":223
  *         if return_pair:
  *             for word, tag in self.posseg(text):
  *                 if tag.startswith("n") or tag == "a" or tag == "v":             # <<<<<<<<<<<<<<
@@ -2589,7 +3401,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
  */
       }
 
-      /* "jiebax/cppjieba.pyx":177
+      /* "jiebax/cppjieba.pyx":222
  * 
  *         if return_pair:
  *             for word, tag in self.posseg(text):             # <<<<<<<<<<<<<<
@@ -2599,7 +3411,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
     }
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "jiebax/cppjieba.pyx":176
+    /* "jiebax/cppjieba.pyx":221
  *         cdef list return_list = []
  * 
  *         if return_pair:             # <<<<<<<<<<<<<<
@@ -2609,7 +3421,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
     goto __pyx_L3;
   }
 
-  /* "jiebax/cppjieba.pyx":181
+  /* "jiebax/cppjieba.pyx":226
  *                     return_list.append((word, tag))
  *         else:
  *             for word, tag in self.posseg(text):             # <<<<<<<<<<<<<<
@@ -2617,9 +3429,9 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
  *                     return_list.append(word)
  */
   /*else*/ {
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_posseg); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 181, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_posseg); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 226, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_text); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 181, __pyx_L1_error)
+    __pyx_t_4 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_text); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 226, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_1 = NULL;
     if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_6))) {
@@ -2632,17 +3444,17 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
       }
     }
     if (!__pyx_t_1) {
-      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 181, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 226, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_3);
     } else {
-      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 181, __pyx_L1_error)
+      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 226, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1); __pyx_t_1 = NULL;
       __Pyx_GIVEREF(__pyx_t_4);
       PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_t_4);
       __pyx_t_4 = 0;
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_5, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 181, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_5, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 226, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
@@ -2651,9 +3463,9 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
       __pyx_t_6 = __pyx_t_3; __Pyx_INCREF(__pyx_t_6); __pyx_t_7 = 0;
       __pyx_t_8 = NULL;
     } else {
-      __pyx_t_7 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 181, __pyx_L1_error)
+      __pyx_t_7 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 226, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_8 = Py_TYPE(__pyx_t_6)->tp_iternext; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 181, __pyx_L1_error)
+      __pyx_t_8 = Py_TYPE(__pyx_t_6)->tp_iternext; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 226, __pyx_L1_error)
     }
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     for (;;) {
@@ -2661,17 +3473,17 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
         if (likely(PyList_CheckExact(__pyx_t_6))) {
           if (__pyx_t_7 >= PyList_GET_SIZE(__pyx_t_6)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_3 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_7); __Pyx_INCREF(__pyx_t_3); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 181, __pyx_L1_error)
+          __pyx_t_3 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_7); __Pyx_INCREF(__pyx_t_3); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 226, __pyx_L1_error)
           #else
-          __pyx_t_3 = PySequence_ITEM(__pyx_t_6, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 181, __pyx_L1_error)
+          __pyx_t_3 = PySequence_ITEM(__pyx_t_6, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 226, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
           #endif
         } else {
           if (__pyx_t_7 >= PyTuple_GET_SIZE(__pyx_t_6)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_7); __Pyx_INCREF(__pyx_t_3); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 181, __pyx_L1_error)
+          __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_7); __Pyx_INCREF(__pyx_t_3); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 226, __pyx_L1_error)
           #else
-          __pyx_t_3 = PySequence_ITEM(__pyx_t_6, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 181, __pyx_L1_error)
+          __pyx_t_3 = PySequence_ITEM(__pyx_t_6, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 226, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
           #endif
         }
@@ -2681,7 +3493,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 181, __pyx_L1_error)
+            else __PYX_ERR(0, 226, __pyx_L1_error)
           }
           break;
         }
@@ -2697,7 +3509,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
         if (unlikely(size != 2)) {
           if (size > 2) __Pyx_RaiseTooManyValuesError(2);
           else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-          __PYX_ERR(0, 181, __pyx_L1_error)
+          __PYX_ERR(0, 226, __pyx_L1_error)
         }
         #if CYTHON_COMPILING_IN_CPYTHON
         if (likely(PyTuple_CheckExact(sequence))) {
@@ -2710,15 +3522,15 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
         __Pyx_INCREF(__pyx_t_5);
         __Pyx_INCREF(__pyx_t_4);
         #else
-        __pyx_t_5 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 181, __pyx_L1_error)
+        __pyx_t_5 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 226, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
-        __pyx_t_4 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 181, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 226, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       } else {
         Py_ssize_t index = -1;
-        __pyx_t_1 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 181, __pyx_L1_error)
+        __pyx_t_1 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_t_9 = Py_TYPE(__pyx_t_1)->tp_iternext;
@@ -2726,7 +3538,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
         __Pyx_GOTREF(__pyx_t_5);
         index = 1; __pyx_t_4 = __pyx_t_9(__pyx_t_1); if (unlikely(!__pyx_t_4)) goto __pyx_L14_unpacking_failed;
         __Pyx_GOTREF(__pyx_t_4);
-        if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_1), 2) < 0) __PYX_ERR(0, 181, __pyx_L1_error)
+        if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_1), 2) < 0) __PYX_ERR(0, 226, __pyx_L1_error)
         __pyx_t_9 = NULL;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         goto __pyx_L15_unpacking_done;
@@ -2734,26 +3546,26 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __pyx_t_9 = NULL;
         if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-        __PYX_ERR(0, 181, __pyx_L1_error)
+        __PYX_ERR(0, 226, __pyx_L1_error)
         __pyx_L15_unpacking_done:;
       }
-      __pyx_t_11 = __pyx_convert_string_from_py_std__in_string(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 181, __pyx_L1_error)
+      __pyx_t_11 = __pyx_convert_string_from_py_std__in_string(__pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 226, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_10 = __pyx_convert_string_from_py_std__in_string(__pyx_t_4); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 181, __pyx_L1_error)
+      __pyx_t_10 = __pyx_convert_string_from_py_std__in_string(__pyx_t_4); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 226, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_v_word = __pyx_t_11;
       __pyx_v_tag = __pyx_t_10;
 
-      /* "jiebax/cppjieba.pyx":182
+      /* "jiebax/cppjieba.pyx":227
  *         else:
  *             for word, tag in self.posseg(text):
  *                 if tag.startswith("n") or tag == "a" or tag == "v":             # <<<<<<<<<<<<<<
  *                     return_list.append(word)
  * 
  */
-      __pyx_t_3 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_tag); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 182, __pyx_L1_error)
+      __pyx_t_3 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_tag); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 227, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_12 = __Pyx_PyBytes_Tailmatch(__pyx_t_3, __pyx_n_s_n, 0, PY_SSIZE_T_MAX, -1); if (unlikely(__pyx_t_12 == -1)) __PYX_ERR(0, 182, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyBytes_Tailmatch(__pyx_t_3, __pyx_n_s_n, 0, PY_SSIZE_T_MAX, -1); if (unlikely(__pyx_t_12 == -1)) __PYX_ERR(0, 227, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       if (!(__pyx_t_12 != 0)) {
       } else {
@@ -2771,19 +3583,19 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
       __pyx_L17_bool_binop_done:;
       if (__pyx_t_2) {
 
-        /* "jiebax/cppjieba.pyx":183
+        /* "jiebax/cppjieba.pyx":228
  *             for word, tag in self.posseg(text):
  *                 if tag.startswith("n") or tag == "a" or tag == "v":
  *                     return_list.append(word)             # <<<<<<<<<<<<<<
  * 
  *         return return_list
  */
-        __pyx_t_3 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_word); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 183, __pyx_L1_error)
+        __pyx_t_3 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_word); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 228, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_return_list, __pyx_t_3); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 183, __pyx_L1_error)
+        __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_return_list, __pyx_t_3); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 228, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-        /* "jiebax/cppjieba.pyx":182
+        /* "jiebax/cppjieba.pyx":227
  *         else:
  *             for word, tag in self.posseg(text):
  *                 if tag.startswith("n") or tag == "a" or tag == "v":             # <<<<<<<<<<<<<<
@@ -2792,7 +3604,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
  */
       }
 
-      /* "jiebax/cppjieba.pyx":181
+      /* "jiebax/cppjieba.pyx":226
  *                     return_list.append((word, tag))
  *         else:
  *             for word, tag in self.posseg(text):             # <<<<<<<<<<<<<<
@@ -2804,7 +3616,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
   }
   __pyx_L3:;
 
-  /* "jiebax/cppjieba.pyx":185
+  /* "jiebax/cppjieba.pyx":230
  *                     return_list.append(word)
  * 
  *         return return_list             # <<<<<<<<<<<<<<
@@ -2816,7 +3628,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
   __pyx_r = __pyx_v_return_list;
   goto __pyx_L0;
 
-  /* "jiebax/cppjieba.pyx":169
+  /* "jiebax/cppjieba.pyx":214
  *         return return_list
  * 
  *     def _DEPRE_posseg_nav(self, string text, return_pair=False):             # <<<<<<<<<<<<<<
@@ -2840,7 +3652,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14_DEPRE_posseg_nav(struct _
   return __pyx_r;
 }
 
-/* "jiebax/cppjieba.pyx":194
+/* "jiebax/cppjieba.pyx":239
  *     cdef TextRankExtractor *thisptr
  * 
  *     def __cinit__(self, JiebaX jiebax, string stop_words_filepath=STOPWORDS_PATH):             # <<<<<<<<<<<<<<
@@ -2880,7 +3692,7 @@ static int __pyx_pw_6jiebax_8cppjieba_14JiebaXTextRank_1__cinit__(PyObject *__py
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 194, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 239, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -2892,20 +3704,20 @@ static int __pyx_pw_6jiebax_8cppjieba_14JiebaXTextRank_1__cinit__(PyObject *__py
     }
     __pyx_v_jiebax = ((struct __pyx_obj_6jiebax_8cppjieba_JiebaX *)values[0]);
     if (values[1]) {
-      __pyx_v_stop_words_filepath = __pyx_convert_string_from_py_std__in_string(values[1]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 194, __pyx_L3_error)
+      __pyx_v_stop_words_filepath = __pyx_convert_string_from_py_std__in_string(values[1]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 239, __pyx_L3_error)
     } else {
-      __pyx_v_stop_words_filepath = __pyx_k__8;
+      __pyx_v_stop_words_filepath = __pyx_k__11;
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 194, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 239, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jiebax.cppjieba.JiebaXTextRank.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_jiebax), __pyx_ptype_6jiebax_8cppjieba_JiebaX, 1, "jiebax", 0))) __PYX_ERR(0, 194, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_jiebax), __pyx_ptype_6jiebax_8cppjieba_JiebaX, 1, "jiebax", 0))) __PYX_ERR(0, 239, __pyx_L1_error)
   __pyx_r = __pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank___cinit__(((struct __pyx_obj_6jiebax_8cppjieba_JiebaXTextRank *)__pyx_v_self), __pyx_v_jiebax, __pyx_v_stop_words_filepath);
 
   /* function exit code */
@@ -2923,7 +3735,7 @@ static int __pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank___cinit__(struct __pyx_ob
   cppjieba::TextRankExtractor *__pyx_t_1;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "jiebax/cppjieba.pyx":195
+  /* "jiebax/cppjieba.pyx":240
  * 
  *     def __cinit__(self, JiebaX jiebax, string stop_words_filepath=STOPWORDS_PATH):
  *         self.thisptr = new TextRankExtractor(deref(jiebax.thisptr), stop_words_filepath)             # <<<<<<<<<<<<<<
@@ -2934,11 +3746,11 @@ static int __pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank___cinit__(struct __pyx_ob
     __pyx_t_1 = new cppjieba::TextRankExtractor((*__pyx_v_jiebax->thisptr), __pyx_v_stop_words_filepath);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 195, __pyx_L1_error)
+    __PYX_ERR(0, 240, __pyx_L1_error)
   }
   __pyx_v_self->thisptr = __pyx_t_1;
 
-  /* "jiebax/cppjieba.pyx":194
+  /* "jiebax/cppjieba.pyx":239
  *     cdef TextRankExtractor *thisptr
  * 
  *     def __cinit__(self, JiebaX jiebax, string stop_words_filepath=STOPWORDS_PATH):             # <<<<<<<<<<<<<<
@@ -2957,7 +3769,7 @@ static int __pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank___cinit__(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "jiebax/cppjieba.pyx":196
+/* "jiebax/cppjieba.pyx":241
  *     def __cinit__(self, JiebaX jiebax, string stop_words_filepath=STOPWORDS_PATH):
  *         self.thisptr = new TextRankExtractor(deref(jiebax.thisptr), stop_words_filepath)
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -2980,7 +3792,7 @@ static void __pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank_2__dealloc__(struct __py
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
-  /* "jiebax/cppjieba.pyx":197
+  /* "jiebax/cppjieba.pyx":242
  *         self.thisptr = new TextRankExtractor(deref(jiebax.thisptr), stop_words_filepath)
  *     def __dealloc__(self):
  *         del self.thisptr             # <<<<<<<<<<<<<<
@@ -2989,7 +3801,7 @@ static void __pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank_2__dealloc__(struct __py
  */
   delete __pyx_v_self->thisptr;
 
-  /* "jiebax/cppjieba.pyx":196
+  /* "jiebax/cppjieba.pyx":241
  *     def __cinit__(self, JiebaX jiebax, string stop_words_filepath=STOPWORDS_PATH):
  *         self.thisptr = new TextRankExtractor(deref(jiebax.thisptr), stop_words_filepath)
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -3001,7 +3813,7 @@ static void __pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank_2__dealloc__(struct __py
   __Pyx_RefNannyFinishContext();
 }
 
-/* "jiebax/cppjieba.pyx":199
+/* "jiebax/cppjieba.pyx":244
  *         del self.thisptr
  * 
  *     def extract(self, string text, int max_words=50):             # <<<<<<<<<<<<<<
@@ -3041,7 +3853,7 @@ static PyObject *__pyx_pw_6jiebax_8cppjieba_14JiebaXTextRank_5extract(PyObject *
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "extract") < 0)) __PYX_ERR(0, 199, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "extract") < 0)) __PYX_ERR(0, 244, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -3051,16 +3863,16 @@ static PyObject *__pyx_pw_6jiebax_8cppjieba_14JiebaXTextRank_5extract(PyObject *
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_text = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 199, __pyx_L3_error)
+    __pyx_v_text = __pyx_convert_string_from_py_std__in_string(values[0]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 244, __pyx_L3_error)
     if (values[1]) {
-      __pyx_v_max_words = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_max_words == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 199, __pyx_L3_error)
+      __pyx_v_max_words = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_max_words == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 244, __pyx_L3_error)
     } else {
       __pyx_v_max_words = ((int)50);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("extract", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 199, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("extract", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 244, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jiebax.cppjieba.JiebaXTextRank.extract", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3080,7 +3892,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank_4extract(struct __p
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("extract", 0);
 
-  /* "jiebax/cppjieba.pyx":201
+  /* "jiebax/cppjieba.pyx":246
  *     def extract(self, string text, int max_words=50):
  *         cdef vector[pair[string, double]] keyword_weight_list
  *         self.thisptr.Extract(text, keyword_weight_list, max_words)             # <<<<<<<<<<<<<<
@@ -3091,10 +3903,10 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank_4extract(struct __p
     __pyx_v_self->thisptr->Extract(__pyx_v_text, __pyx_v_keyword_weight_list, __pyx_v_max_words);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 201, __pyx_L1_error)
+    __PYX_ERR(0, 246, __pyx_L1_error)
   }
 
-  /* "jiebax/cppjieba.pyx":203
+  /* "jiebax/cppjieba.pyx":248
  *         self.thisptr.Extract(text, keyword_weight_list, max_words)
  * 
  *         return keyword_weight_list             # <<<<<<<<<<<<<<
@@ -3102,13 +3914,13 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank_4extract(struct __p
  *     def extract_by_words(self, list words, int max_words=50, int n_span=5, int max_rank_epoch=10):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_pair_3c_std_3a__3a_string_2c_double_3e___(__pyx_v_keyword_weight_list); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 203, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_to_py_std_3a__3a_pair_3c_std_3a__3a_string_2c_double_3e___(__pyx_v_keyword_weight_list); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 248, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "jiebax/cppjieba.pyx":199
+  /* "jiebax/cppjieba.pyx":244
  *         del self.thisptr
  * 
  *     def extract(self, string text, int max_words=50):             # <<<<<<<<<<<<<<
@@ -3127,7 +3939,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank_4extract(struct __p
   return __pyx_r;
 }
 
-/* "jiebax/cppjieba.pyx":205
+/* "jiebax/cppjieba.pyx":250
  *         return keyword_weight_list
  * 
  *     def extract_by_words(self, list words, int max_words=50, int n_span=5, int max_rank_epoch=10):             # <<<<<<<<<<<<<<
@@ -3181,7 +3993,7 @@ static PyObject *__pyx_pw_6jiebax_8cppjieba_14JiebaXTextRank_7extract_by_words(P
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "extract_by_words") < 0)) __PYX_ERR(0, 205, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "extract_by_words") < 0)) __PYX_ERR(0, 250, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -3195,30 +4007,30 @@ static PyObject *__pyx_pw_6jiebax_8cppjieba_14JiebaXTextRank_7extract_by_words(P
     }
     __pyx_v_words = ((PyObject*)values[0]);
     if (values[1]) {
-      __pyx_v_max_words = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_max_words == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 205, __pyx_L3_error)
+      __pyx_v_max_words = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_max_words == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 250, __pyx_L3_error)
     } else {
       __pyx_v_max_words = ((int)50);
     }
     if (values[2]) {
-      __pyx_v_n_span = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_n_span == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 205, __pyx_L3_error)
+      __pyx_v_n_span = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_n_span == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 250, __pyx_L3_error)
     } else {
       __pyx_v_n_span = ((int)5);
     }
     if (values[3]) {
-      __pyx_v_max_rank_epoch = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_max_rank_epoch == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 205, __pyx_L3_error)
+      __pyx_v_max_rank_epoch = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_max_rank_epoch == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 250, __pyx_L3_error)
     } else {
       __pyx_v_max_rank_epoch = ((int)10);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("extract_by_words", 0, 1, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 205, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("extract_by_words", 0, 1, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 250, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("jiebax.cppjieba.JiebaXTextRank.extract_by_words", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_words), (&PyList_Type), 1, "words", 1))) __PYX_ERR(0, 205, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_words), (&PyList_Type), 1, "words", 1))) __PYX_ERR(0, 250, __pyx_L1_error)
   __pyx_r = __pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank_6extract_by_words(((struct __pyx_obj_6jiebax_8cppjieba_JiebaXTextRank *)__pyx_v_self), __pyx_v_words, __pyx_v_max_words, __pyx_v_n_span, __pyx_v_max_rank_epoch);
 
   /* function exit code */
@@ -3244,17 +4056,17 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank_6extract_by_words(s
   PyObject *__pyx_t_6 = NULL;
   __Pyx_RefNannySetupContext("extract_by_words", 0);
 
-  /* "jiebax/cppjieba.pyx":206
+  /* "jiebax/cppjieba.pyx":251
  * 
  *     def extract_by_words(self, list words, int max_words=50, int n_span=5, int max_rank_epoch=10):
  *         cdef vector[string] words_vector = words             # <<<<<<<<<<<<<<
  *         cdef vector[pair[string, double]] keyword_weight_list
  * 
  */
-  __pyx_t_1 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_v_words); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 206, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_v_words); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 251, __pyx_L1_error)
   __pyx_v_words_vector = __pyx_t_1;
 
-  /* "jiebax/cppjieba.pyx":209
+  /* "jiebax/cppjieba.pyx":254
  *         cdef vector[pair[string, double]] keyword_weight_list
  * 
  *         if len(words) < 3:             # <<<<<<<<<<<<<<
@@ -3263,13 +4075,13 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank_6extract_by_words(s
  */
   if (unlikely(__pyx_v_words == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 209, __pyx_L1_error)
+    __PYX_ERR(0, 254, __pyx_L1_error)
   }
-  __pyx_t_2 = PyList_GET_SIZE(__pyx_v_words); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 209, __pyx_L1_error)
+  __pyx_t_2 = PyList_GET_SIZE(__pyx_v_words); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 254, __pyx_L1_error)
   __pyx_t_3 = ((__pyx_t_2 < 3) != 0);
   if (__pyx_t_3) {
 
-    /* "jiebax/cppjieba.pyx":210
+    /* "jiebax/cppjieba.pyx":255
  * 
  *         if len(words) < 3:
  *             return [(word, 1.0) for word in words ]             # <<<<<<<<<<<<<<
@@ -3277,24 +4089,24 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank_6extract_by_words(s
  *         self.thisptr.ExtractByWords(words_vector, keyword_weight_list, max_words, n_span, max_rank_epoch)
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 210, __pyx_L1_error)
+    __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 255, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     if (unlikely(__pyx_v_words == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-      __PYX_ERR(0, 210, __pyx_L1_error)
+      __PYX_ERR(0, 255, __pyx_L1_error)
     }
     __pyx_t_5 = __pyx_v_words; __Pyx_INCREF(__pyx_t_5); __pyx_t_2 = 0;
     for (;;) {
       if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_5)) break;
       #if CYTHON_COMPILING_IN_CPYTHON
-      __pyx_t_6 = PyList_GET_ITEM(__pyx_t_5, __pyx_t_2); __Pyx_INCREF(__pyx_t_6); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 210, __pyx_L1_error)
+      __pyx_t_6 = PyList_GET_ITEM(__pyx_t_5, __pyx_t_2); __Pyx_INCREF(__pyx_t_6); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 255, __pyx_L1_error)
       #else
-      __pyx_t_6 = PySequence_ITEM(__pyx_t_5, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 210, __pyx_L1_error)
+      __pyx_t_6 = PySequence_ITEM(__pyx_t_5, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 255, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       #endif
       __Pyx_XDECREF_SET(__pyx_v_word, __pyx_t_6);
       __pyx_t_6 = 0;
-      __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 210, __pyx_L1_error)
+      __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 255, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_INCREF(__pyx_v_word);
       __Pyx_GIVEREF(__pyx_v_word);
@@ -3302,7 +4114,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank_6extract_by_words(s
       __Pyx_INCREF(__pyx_float_1_0);
       __Pyx_GIVEREF(__pyx_float_1_0);
       PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_float_1_0);
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_4, (PyObject*)__pyx_t_6))) __PYX_ERR(0, 210, __pyx_L1_error)
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_4, (PyObject*)__pyx_t_6))) __PYX_ERR(0, 255, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     }
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -3310,7 +4122,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank_6extract_by_words(s
     __pyx_t_4 = 0;
     goto __pyx_L0;
 
-    /* "jiebax/cppjieba.pyx":209
+    /* "jiebax/cppjieba.pyx":254
  *         cdef vector[pair[string, double]] keyword_weight_list
  * 
  *         if len(words) < 3:             # <<<<<<<<<<<<<<
@@ -3319,7 +4131,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank_6extract_by_words(s
  */
   }
 
-  /* "jiebax/cppjieba.pyx":212
+  /* "jiebax/cppjieba.pyx":257
  *             return [(word, 1.0) for word in words ]
  * 
  *         self.thisptr.ExtractByWords(words_vector, keyword_weight_list, max_words, n_span, max_rank_epoch)             # <<<<<<<<<<<<<<
@@ -3330,10 +4142,10 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank_6extract_by_words(s
     __pyx_v_self->thisptr->ExtractByWords(__pyx_v_words_vector, __pyx_v_keyword_weight_list, __pyx_v_max_words, __pyx_v_n_span, __pyx_v_max_rank_epoch);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 212, __pyx_L1_error)
+    __PYX_ERR(0, 257, __pyx_L1_error)
   }
 
-  /* "jiebax/cppjieba.pyx":214
+  /* "jiebax/cppjieba.pyx":259
  *         self.thisptr.ExtractByWords(words_vector, keyword_weight_list, max_words, n_span, max_rank_epoch)
  * 
  *         return keyword_weight_list             # <<<<<<<<<<<<<<
@@ -3341,13 +4153,13 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_14JiebaXTextRank_6extract_by_words(s
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = __pyx_convert_vector_to_py_std_3a__3a_pair_3c_std_3a__3a_string_2c_double_3e___(__pyx_v_keyword_weight_list); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_vector_to_py_std_3a__3a_pair_3c_std_3a__3a_string_2c_double_3e___(__pyx_v_keyword_weight_list); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 259, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_r = __pyx_t_4;
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "jiebax/cppjieba.pyx":205
+  /* "jiebax/cppjieba.pyx":250
  *         return keyword_weight_list
  * 
  *     def extract_by_words(self, list words, int max_words=50, int n_span=5, int max_rank_epoch=10):             # <<<<<<<<<<<<<<
@@ -4107,12 +4919,15 @@ static void __pyx_tp_dealloc_6jiebax_8cppjieba_JiebaX(PyObject *o) {
 }
 
 static PyMethodDef __pyx_methods_6jiebax_8cppjieba_JiebaX[] = {
-  {"cut", (PyCFunction)__pyx_pw_6jiebax_8cppjieba_6JiebaX_5cut, METH_O, 0},
-  {"posseg", (PyCFunction)__pyx_pw_6jiebax_8cppjieba_6JiebaX_7posseg, METH_O, 0},
-  {"posseg_nav", (PyCFunction)__pyx_pw_6jiebax_8cppjieba_6JiebaX_9posseg_nav, METH_VARARGS|METH_KEYWORDS, 0},
-  {"posseg_filter", (PyCFunction)__pyx_pw_6jiebax_8cppjieba_6JiebaX_11posseg_filter, METH_VARARGS|METH_KEYWORDS, 0},
-  {"_DEPRE_posseg_filter", (PyCFunction)__pyx_pw_6jiebax_8cppjieba_6JiebaX_13_DEPRE_posseg_filter, METH_VARARGS|METH_KEYWORDS, 0},
-  {"_DEPRE_posseg_nav", (PyCFunction)__pyx_pw_6jiebax_8cppjieba_6JiebaX_15_DEPRE_posseg_nav, METH_VARARGS|METH_KEYWORDS, 0},
+  {"convert_encode", (PyCFunction)__pyx_pw_6jiebax_8cppjieba_6JiebaX_5convert_encode, METH_O, 0},
+  {"cut", (PyCFunction)__pyx_pw_6jiebax_8cppjieba_6JiebaX_7cut, METH_VARARGS|METH_KEYWORDS, 0},
+  {"posseg", (PyCFunction)__pyx_pw_6jiebax_8cppjieba_6JiebaX_9posseg, METH_O, 0},
+  {"posseg_nav", (PyCFunction)__pyx_pw_6jiebax_8cppjieba_6JiebaX_11posseg_nav, METH_VARARGS|METH_KEYWORDS, 0},
+  {"posseg_filter", (PyCFunction)__pyx_pw_6jiebax_8cppjieba_6JiebaX_13posseg_filter, METH_VARARGS|METH_KEYWORDS, 0},
+  {"cut_docs_multi", (PyCFunction)__pyx_pw_6jiebax_8cppjieba_6JiebaX_15cut_docs_multi, METH_VARARGS|METH_KEYWORDS, 0},
+  {"cut_docs", (PyCFunction)__pyx_pw_6jiebax_8cppjieba_6JiebaX_17cut_docs, METH_VARARGS|METH_KEYWORDS, 0},
+  {"_DEPRE_posseg_filter", (PyCFunction)__pyx_pw_6jiebax_8cppjieba_6JiebaX_19_DEPRE_posseg_filter, METH_VARARGS|METH_KEYWORDS, 0},
+  {"_DEPRE_posseg_nav", (PyCFunction)__pyx_pw_6jiebax_8cppjieba_6JiebaX_21_DEPRE_posseg_nav, METH_VARARGS|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 
@@ -4294,11 +5109,16 @@ static struct PyModuleDef __pyx_moduledef = {
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_DATA_PATH_DICT, __pyx_k_DATA_PATH_DICT, sizeof(__pyx_k_DATA_PATH_DICT), 0, 0, 1, 1},
   {&__pyx_n_s_DICT_PATH, __pyx_k_DICT_PATH, sizeof(__pyx_k_DICT_PATH), 0, 0, 1, 1},
+  {&__pyx_n_s_Exception, __pyx_k_Exception, sizeof(__pyx_k_Exception), 0, 0, 1, 1},
   {&__pyx_n_s_MODEL_PATH, __pyx_k_MODEL_PATH, sizeof(__pyx_k_MODEL_PATH), 0, 0, 1, 1},
   {&__pyx_n_s_SITEPKGS_PATH, __pyx_k_SITEPKGS_PATH, sizeof(__pyx_k_SITEPKGS_PATH), 0, 0, 1, 1},
   {&__pyx_n_s_STOPWORDS_PATH, __pyx_k_STOPWORDS_PATH, sizeof(__pyx_k_STOPWORDS_PATH), 0, 0, 1, 1},
-  {&__pyx_kp_b__9, __pyx_k__9, sizeof(__pyx_k__9), 0, 0, 0, 0},
+  {&__pyx_kp_b__12, __pyx_k__12, sizeof(__pyx_k__12), 0, 0, 0, 0},
+  {&__pyx_n_s_convert_encode, __pyx_k_convert_encode, sizeof(__pyx_k_convert_encode), 0, 0, 1, 1},
+  {&__pyx_n_s_cut_docs_multi, __pyx_k_cut_docs_multi, sizeof(__pyx_k_cut_docs_multi), 0, 0, 1, 1},
   {&__pyx_n_s_dict_path, __pyx_k_dict_path, sizeof(__pyx_k_dict_path), 0, 0, 1, 1},
+  {&__pyx_n_s_docs, __pyx_k_docs, sizeof(__pyx_k_docs), 0, 0, 1, 1},
+  {&__pyx_n_s_encode, __pyx_k_encode, sizeof(__pyx_k_encode), 0, 0, 1, 1},
   {&__pyx_n_s_fpath, __pyx_k_fpath, sizeof(__pyx_k_fpath), 0, 0, 1, 1},
   {&__pyx_n_s_getsitepackages, __pyx_k_getsitepackages, sizeof(__pyx_k_getsitepackages), 0, 0, 1, 1},
   {&__pyx_kp_s_hmm_model_utf8, __pyx_k_hmm_model_utf8, sizeof(__pyx_k_hmm_model_utf8), 0, 0, 1, 0},
@@ -4316,10 +5136,14 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_model_path, __pyx_k_model_path, sizeof(__pyx_k_model_path), 0, 0, 1, 1},
   {&__pyx_n_s_n, __pyx_k_n, sizeof(__pyx_k_n), 0, 0, 1, 1},
   {&__pyx_n_s_n_span, __pyx_k_n_span, sizeof(__pyx_k_n_span), 0, 0, 1, 1},
+  {&__pyx_n_s_n_threads, __pyx_k_n_threads, sizeof(__pyx_k_n_threads), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
+  {&__pyx_kp_s_no_multithread_implementation, __pyx_k_no_multithread_implementation, sizeof(__pyx_k_no_multithread_implementation), 0, 0, 1, 0},
   {&__pyx_n_s_os, __pyx_k_os, sizeof(__pyx_k_os), 0, 0, 1, 1},
   {&__pyx_n_s_path, __pyx_k_path, sizeof(__pyx_k_path), 0, 0, 1, 1},
+  {&__pyx_n_s_pos_tags, __pyx_k_pos_tags, sizeof(__pyx_k_pos_tags), 0, 0, 1, 1},
   {&__pyx_n_s_posseg, __pyx_k_posseg, sizeof(__pyx_k_posseg), 0, 0, 1, 1},
+  {&__pyx_n_s_posseg_nav, __pyx_k_posseg_nav, sizeof(__pyx_k_posseg_nav), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_return_pair, __pyx_k_return_pair, sizeof(__pyx_k_return_pair), 0, 0, 1, 1},
   {&__pyx_n_s_site, __pyx_k_site, sizeof(__pyx_k_site), 0, 0, 1, 1},
@@ -4329,11 +5153,14 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_temp, __pyx_k_temp, sizeof(__pyx_k_temp), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_text, __pyx_k_text, sizeof(__pyx_k_text), 0, 0, 1, 1},
+  {&__pyx_n_s_unicode_flag, __pyx_k_unicode_flag, sizeof(__pyx_k_unicode_flag), 0, 0, 1, 1},
   {&__pyx_n_s_user_dict_path, __pyx_k_user_dict_path, sizeof(__pyx_k_user_dict_path), 0, 0, 1, 1},
+  {&__pyx_kp_s_utf_8, __pyx_k_utf_8, sizeof(__pyx_k_utf_8), 0, 0, 1, 0},
   {&__pyx_n_s_words, __pyx_k_words, sizeof(__pyx_k_words), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
+  __pyx_builtin_Exception = __Pyx_GetBuiltinName(__pyx_n_s_Exception); if (!__pyx_builtin_Exception) __PYX_ERR(0, 170, __pyx_L1_error)
   __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(1, 68, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
@@ -4343,13 +5170,40 @@ static int __Pyx_InitCachedBuiltins(void) {
 static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
+
+  /* "jiebax/cppjieba.pyx":86
+ *     def convert_encode(self, text):
+ *         if type(text) == unicode:
+ *             text = text.encode("utf-8")             # <<<<<<<<<<<<<<
+ * 
+ *         return text
+ */
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_utf_8); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__4);
+  __Pyx_GIVEREF(__pyx_tuple__4);
+
+  /* "jiebax/cppjieba.pyx":170
+ *             doc_words_list = [self.posseg_nav(doc, return_pair=False) for doc in docs]
+ *         else:
+ *             raise Exception("no multithread implementation")             # <<<<<<<<<<<<<<
+ * 
+ *         return doc_words_list
+ */
+  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_s_no_multithread_implementation); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 170, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__8);
+  __Pyx_GIVEREF(__pyx_tuple__8);
   __Pyx_RefNannyFinishContext();
   return 0;
+  __pyx_L1_error:;
+  __Pyx_RefNannyFinishContext();
+  return -1;
 }
 
 static int __Pyx_InitGlobals(void) {
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
   __pyx_float_1_0 = PyFloat_FromDouble(1.0); if (unlikely(!__pyx_float_1_0)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_1 = PyInt_FromLong(1); if (unlikely(!__pyx_int_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_2 = PyInt_FromLong(2); if (unlikely(!__pyx_int_2)) __PYX_ERR(0, 1, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -4451,13 +5305,13 @@ PyMODINIT_FUNC PyInit_cppjieba(void)
   /*--- Variable export code ---*/
   /*--- Function export code ---*/
   /*--- Type init code ---*/
-  if (PyType_Ready(&__pyx_type_6jiebax_8cppjieba_JiebaX) < 0) __PYX_ERR(0, 56, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_6jiebax_8cppjieba_JiebaX) < 0) __PYX_ERR(0, 66, __pyx_L1_error)
   __pyx_type_6jiebax_8cppjieba_JiebaX.tp_print = 0;
-  if (PyObject_SetAttrString(__pyx_m, "JiebaX", (PyObject *)&__pyx_type_6jiebax_8cppjieba_JiebaX) < 0) __PYX_ERR(0, 56, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "JiebaX", (PyObject *)&__pyx_type_6jiebax_8cppjieba_JiebaX) < 0) __PYX_ERR(0, 66, __pyx_L1_error)
   __pyx_ptype_6jiebax_8cppjieba_JiebaX = &__pyx_type_6jiebax_8cppjieba_JiebaX;
-  if (PyType_Ready(&__pyx_type_6jiebax_8cppjieba_JiebaXTextRank) < 0) __PYX_ERR(0, 190, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_6jiebax_8cppjieba_JiebaXTextRank) < 0) __PYX_ERR(0, 235, __pyx_L1_error)
   __pyx_type_6jiebax_8cppjieba_JiebaXTextRank.tp_print = 0;
-  if (PyObject_SetAttrString(__pyx_m, "JiebaXTextRank", (PyObject *)&__pyx_type_6jiebax_8cppjieba_JiebaXTextRank) < 0) __PYX_ERR(0, 190, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "JiebaXTextRank", (PyObject *)&__pyx_type_6jiebax_8cppjieba_JiebaXTextRank) < 0) __PYX_ERR(0, 235, __pyx_L1_error)
   __pyx_ptype_6jiebax_8cppjieba_JiebaXTextRank = &__pyx_type_6jiebax_8cppjieba_JiebaXTextRank;
   /*--- Type import code ---*/
   /*--- Variable import code ---*/
@@ -4905,74 +5759,87 @@ PyMODINIT_FUNC PyInit_cppjieba(void)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_STOPWORDS_PATH, __pyx_t_3) < 0) __PYX_ERR(0, 31, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "jiebax/cppjieba.pyx":62
+  /* "jiebax/cppjieba.pyx":72
  *     # cdef Jieba& thisref
  * 
  *     def __cinit__(self, string dict_path=DICT_PATH, string model_path=MODEL_PATH, string user_dict_path=""):             # <<<<<<<<<<<<<<
  *         self.thisptr = new Jieba(dict_path, model_path, user_dict_path)
  *         # self.thisref = deref(self.thisptr)
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_DICT_PATH); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_DICT_PATH); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_13 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_13 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_k_ = __pyx_t_13;
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_MODEL_PATH); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_MODEL_PATH); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_13 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_13 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_k__2 = __pyx_t_13;
-  __pyx_t_13 = __pyx_convert_string_from_py_std__in_string(__pyx_kp_b__9); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_13 = __pyx_convert_string_from_py_std__in_string(__pyx_kp_b__12); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 72, __pyx_L1_error)
   __pyx_k__3 = __pyx_t_13;
 
-  /* "jiebax/cppjieba.pyx":111
+  /* "jiebax/cppjieba.pyx":141
  *         return words
  * 
- *     def posseg_filter(self, string text, set ifin_set=set(), list startswith_list=list(), return_pair=False):             # <<<<<<<<<<<<<<
- *         cdef vector[pair[string, string]] words_pos_vector
- *         cdef vector[string] words_vector
+ *     def posseg_filter(self, text, set ifin_set=set(), list startswith_list=list(), return_pair=False):             # <<<<<<<<<<<<<<
+ *         text = self.convert_encode(text)
+ * 
  */
-  __pyx_t_3 = PySet_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 111, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_k__4 = ((PyObject*)__pyx_t_3);
-  __Pyx_GIVEREF(__pyx_t_3);
-  __pyx_t_3 = 0;
-  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 111, __pyx_L1_error)
+  __pyx_t_3 = PySet_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 141, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_k__5 = ((PyObject*)__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_3);
   __pyx_t_3 = 0;
+  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 141, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_k__6 = ((PyObject*)__pyx_t_3);
+  __Pyx_GIVEREF(__pyx_t_3);
+  __pyx_t_3 = 0;
 
-  /* "jiebax/cppjieba.pyx":134
+  /* "jiebax/cppjieba.pyx":166
+ *     # for backwards compability
+ * 
+ *     def cut_docs_multi(self, docs, pos_tags=[], n_threads=1):             # <<<<<<<<<<<<<<
+ *         if n_threads < 2:
+ *             doc_words_list = [self.posseg_nav(doc, return_pair=False) for doc in docs]
+ */
+  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 166, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_k__7 = __pyx_t_3;
+  __Pyx_GIVEREF(__pyx_t_3);
+  __pyx_t_3 = 0;
+
+  /* "jiebax/cppjieba.pyx":179
  *     # new added methods
  * 
  *     def _DEPRE_posseg_filter(self, string text, list startswith_list=[], set ifin_set=set(), return_pair=False):             # <<<<<<<<<<<<<<
  *         cdef string word
  * 
  */
-  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 134, __pyx_L1_error)
+  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 179, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_k__6 = ((PyObject*)__pyx_t_3);
+  __pyx_k__9 = ((PyObject*)__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_3);
   __pyx_t_3 = 0;
-  __pyx_t_3 = PySet_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 134, __pyx_L1_error)
+  __pyx_t_3 = PySet_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 179, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_k__7 = ((PyObject*)__pyx_t_3);
+  __pyx_k__10 = ((PyObject*)__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "jiebax/cppjieba.pyx":194
+  /* "jiebax/cppjieba.pyx":239
  *     cdef TextRankExtractor *thisptr
  * 
  *     def __cinit__(self, JiebaX jiebax, string stop_words_filepath=STOPWORDS_PATH):             # <<<<<<<<<<<<<<
  *         self.thisptr = new TextRankExtractor(deref(jiebax.thisptr), stop_words_filepath)
  *     def __dealloc__(self):
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_STOPWORDS_PATH); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_STOPWORDS_PATH); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 239, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_13 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_13 = __pyx_convert_string_from_py_std__in_string(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 239, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_k__8 = __pyx_t_13;
+  __pyx_k__11 = __pyx_t_13;
 
   /* "jiebax/cppjieba.pyx":1
  * #cython.wraparound=False             # <<<<<<<<<<<<<<
@@ -5037,6 +5904,20 @@ end:
     return (__Pyx_RefNannyAPIStruct *)r;
 }
 #endif
+
+/* GetBuiltinName */
+static PyObject *__Pyx_GetBuiltinName(PyObject *name) {
+    PyObject* result = __Pyx_PyObject_GetAttrStr(__pyx_b, name);
+    if (unlikely(!result)) {
+        PyErr_Format(PyExc_NameError,
+#if PY_MAJOR_VERSION >= 3
+            "name '%U' is not defined", name);
+#else
+            "name '%.200s' is not defined", PyString_AS_STRING(name));
+#endif
+    }
+    return result;
+}
 
 /* RaiseDoubleKeywords */
 static void __Pyx_RaiseDoubleKeywordsError(
@@ -5180,33 +6061,6 @@ static void __Pyx_RaiseArgtupleInvalid(
                  (num_expected == 1) ? "" : "s", num_found);
 }
 
-/* ArgTypeTest */
-static void __Pyx_RaiseArgumentTypeInvalid(const char* name, PyObject *obj, PyTypeObject *type) {
-    PyErr_Format(PyExc_TypeError,
-        "Argument '%.200s' has incorrect type (expected %.200s, got %.200s)",
-        name, type->tp_name, Py_TYPE(obj)->tp_name);
-}
-static CYTHON_INLINE int __Pyx_ArgTypeTest(PyObject *obj, PyTypeObject *type, int none_allowed,
-    const char *name, int exact)
-{
-    if (unlikely(!type)) {
-        PyErr_SetString(PyExc_SystemError, "Missing type object");
-        return 0;
-    }
-    if (none_allowed && obj == Py_None) return 1;
-    else if (exact) {
-        if (likely(Py_TYPE(obj) == type)) return 1;
-        #if PY_MAJOR_VERSION == 2
-        else if ((type == &PyBaseString_Type) && likely(__Pyx_PyBaseString_CheckExact(obj))) return 1;
-        #endif
-    }
-    else {
-        if (likely(PyObject_TypeCheck(obj, type))) return 1;
-    }
-    __Pyx_RaiseArgumentTypeInvalid(name, obj, type);
-    return 0;
-}
-
 /* PyObjectCall */
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw) {
@@ -5282,21 +6136,262 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObjec
 }
 #endif
 
-/* RaiseTooManyValuesToUnpack */
-  static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected) {
-    PyErr_Format(PyExc_ValueError,
-                 "too many values to unpack (expected %" CYTHON_FORMAT_SSIZE_T "d)", expected);
+/* ArgTypeTest */
+  static void __Pyx_RaiseArgumentTypeInvalid(const char* name, PyObject *obj, PyTypeObject *type) {
+    PyErr_Format(PyExc_TypeError,
+        "Argument '%.200s' has incorrect type (expected %.200s, got %.200s)",
+        name, type->tp_name, Py_TYPE(obj)->tp_name);
+}
+static CYTHON_INLINE int __Pyx_ArgTypeTest(PyObject *obj, PyTypeObject *type, int none_allowed,
+    const char *name, int exact)
+{
+    if (unlikely(!type)) {
+        PyErr_SetString(PyExc_SystemError, "Missing type object");
+        return 0;
+    }
+    if (none_allowed && obj == Py_None) return 1;
+    else if (exact) {
+        if (likely(Py_TYPE(obj) == type)) return 1;
+        #if PY_MAJOR_VERSION == 2
+        else if ((type == &PyBaseString_Type) && likely(__Pyx_PyBaseString_CheckExact(obj))) return 1;
+        #endif
+    }
+    else {
+        if (likely(PyObject_TypeCheck(obj, type))) return 1;
+    }
+    __Pyx_RaiseArgumentTypeInvalid(name, obj, type);
+    return 0;
 }
 
-/* RaiseNeedMoreValuesToUnpack */
-  static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index) {
-    PyErr_Format(PyExc_ValueError,
-                 "need more than %" CYTHON_FORMAT_SSIZE_T "d value%.1s to unpack",
-                 index, (index == 1) ? "" : "s");
+/* PyErrFetchRestore */
+  #if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
+    PyObject *tmp_type, *tmp_value, *tmp_tb;
+    tmp_type = tstate->curexc_type;
+    tmp_value = tstate->curexc_value;
+    tmp_tb = tstate->curexc_traceback;
+    tstate->curexc_type = type;
+    tstate->curexc_value = value;
+    tstate->curexc_traceback = tb;
+    Py_XDECREF(tmp_type);
+    Py_XDECREF(tmp_value);
+    Py_XDECREF(tmp_tb);
+}
+static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
+    *type = tstate->curexc_type;
+    *value = tstate->curexc_value;
+    *tb = tstate->curexc_traceback;
+    tstate->curexc_type = 0;
+    tstate->curexc_value = 0;
+    tstate->curexc_traceback = 0;
+}
+#endif
+
+/* RaiseException */
+  #if PY_MAJOR_VERSION < 3
+static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb,
+                        CYTHON_UNUSED PyObject *cause) {
+    __Pyx_PyThreadState_declare
+    Py_XINCREF(type);
+    if (!value || value == Py_None)
+        value = NULL;
+    else
+        Py_INCREF(value);
+    if (!tb || tb == Py_None)
+        tb = NULL;
+    else {
+        Py_INCREF(tb);
+        if (!PyTraceBack_Check(tb)) {
+            PyErr_SetString(PyExc_TypeError,
+                "raise: arg 3 must be a traceback or None");
+            goto raise_error;
+        }
+    }
+    if (PyType_Check(type)) {
+#if CYTHON_COMPILING_IN_PYPY
+        if (!value) {
+            Py_INCREF(Py_None);
+            value = Py_None;
+        }
+#endif
+        PyErr_NormalizeException(&type, &value, &tb);
+    } else {
+        if (value) {
+            PyErr_SetString(PyExc_TypeError,
+                "instance exception may not have a separate value");
+            goto raise_error;
+        }
+        value = type;
+        type = (PyObject*) Py_TYPE(type);
+        Py_INCREF(type);
+        if (!PyType_IsSubtype((PyTypeObject *)type, (PyTypeObject *)PyExc_BaseException)) {
+            PyErr_SetString(PyExc_TypeError,
+                "raise: exception class must be a subclass of BaseException");
+            goto raise_error;
+        }
+    }
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrRestore(type, value, tb);
+    return;
+raise_error:
+    Py_XDECREF(value);
+    Py_XDECREF(type);
+    Py_XDECREF(tb);
+    return;
+}
+#else
+static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause) {
+    PyObject* owned_instance = NULL;
+    if (tb == Py_None) {
+        tb = 0;
+    } else if (tb && !PyTraceBack_Check(tb)) {
+        PyErr_SetString(PyExc_TypeError,
+            "raise: arg 3 must be a traceback or None");
+        goto bad;
+    }
+    if (value == Py_None)
+        value = 0;
+    if (PyExceptionInstance_Check(type)) {
+        if (value) {
+            PyErr_SetString(PyExc_TypeError,
+                "instance exception may not have a separate value");
+            goto bad;
+        }
+        value = type;
+        type = (PyObject*) Py_TYPE(value);
+    } else if (PyExceptionClass_Check(type)) {
+        PyObject *instance_class = NULL;
+        if (value && PyExceptionInstance_Check(value)) {
+            instance_class = (PyObject*) Py_TYPE(value);
+            if (instance_class != type) {
+                int is_subclass = PyObject_IsSubclass(instance_class, type);
+                if (!is_subclass) {
+                    instance_class = NULL;
+                } else if (unlikely(is_subclass == -1)) {
+                    goto bad;
+                } else {
+                    type = instance_class;
+                }
+            }
+        }
+        if (!instance_class) {
+            PyObject *args;
+            if (!value)
+                args = PyTuple_New(0);
+            else if (PyTuple_Check(value)) {
+                Py_INCREF(value);
+                args = value;
+            } else
+                args = PyTuple_Pack(1, value);
+            if (!args)
+                goto bad;
+            owned_instance = PyObject_Call(type, args, NULL);
+            Py_DECREF(args);
+            if (!owned_instance)
+                goto bad;
+            value = owned_instance;
+            if (!PyExceptionInstance_Check(value)) {
+                PyErr_Format(PyExc_TypeError,
+                             "calling %R should have returned an instance of "
+                             "BaseException, not %R",
+                             type, Py_TYPE(value));
+                goto bad;
+            }
+        }
+    } else {
+        PyErr_SetString(PyExc_TypeError,
+            "raise: exception class must be a subclass of BaseException");
+        goto bad;
+    }
+#if PY_VERSION_HEX >= 0x03030000
+    if (cause) {
+#else
+    if (cause && cause != Py_None) {
+#endif
+        PyObject *fixed_cause;
+        if (cause == Py_None) {
+            fixed_cause = NULL;
+        } else if (PyExceptionClass_Check(cause)) {
+            fixed_cause = PyObject_CallObject(cause, NULL);
+            if (fixed_cause == NULL)
+                goto bad;
+        } else if (PyExceptionInstance_Check(cause)) {
+            fixed_cause = cause;
+            Py_INCREF(fixed_cause);
+        } else {
+            PyErr_SetString(PyExc_TypeError,
+                            "exception causes must derive from "
+                            "BaseException");
+            goto bad;
+        }
+        PyException_SetCause(value, fixed_cause);
+    }
+    PyErr_SetObject(type, value);
+    if (tb) {
+#if CYTHON_COMPILING_IN_PYPY
+        PyObject *tmp_type, *tmp_value, *tmp_tb;
+        PyErr_Fetch(&tmp_type, &tmp_value, &tmp_tb);
+        Py_INCREF(tb);
+        PyErr_Restore(tmp_type, tmp_value, tb);
+        Py_XDECREF(tmp_tb);
+#else
+        PyThreadState *tstate = PyThreadState_GET();
+        PyObject* tmp_tb = tstate->curexc_traceback;
+        if (tb != tmp_tb) {
+            Py_INCREF(tb);
+            tstate->curexc_traceback = tb;
+            Py_XDECREF(tmp_tb);
+        }
+#endif
+    }
+bad:
+    Py_XDECREF(owned_instance);
+    return;
+}
+#endif
+
+/* KeywordStringCheck */
+    static CYTHON_INLINE int __Pyx_CheckKeywordStrings(
+    PyObject *kwdict,
+    const char* function_name,
+    int kw_allowed)
+{
+    PyObject* key = 0;
+    Py_ssize_t pos = 0;
+#if CYTHON_COMPILING_IN_PYPY
+    if (!kw_allowed && PyDict_Next(kwdict, &pos, &key, 0))
+        goto invalid_keyword;
+    return 1;
+#else
+    while (PyDict_Next(kwdict, &pos, &key, 0)) {
+        #if PY_MAJOR_VERSION < 3
+        if (unlikely(!PyString_CheckExact(key)) && unlikely(!PyString_Check(key)))
+        #endif
+            if (unlikely(!PyUnicode_Check(key)))
+                goto invalid_keyword_type;
+    }
+    if ((!kw_allowed) && unlikely(key))
+        goto invalid_keyword;
+    return 1;
+invalid_keyword_type:
+    PyErr_Format(PyExc_TypeError,
+        "%.200s() keywords must be strings", function_name);
+    return 0;
+#endif
+invalid_keyword:
+    PyErr_Format(PyExc_TypeError,
+    #if PY_MAJOR_VERSION < 3
+        "%.200s() got an unexpected keyword argument '%.200s'",
+        function_name, PyString_AsString(key));
+    #else
+        "%s() got an unexpected keyword argument '%U'",
+        function_name, key);
+    #endif
+    return 0;
 }
 
 /* IterFinish */
-  static CYTHON_INLINE int __Pyx_IterFinish(void) {
+    static CYTHON_INLINE int __Pyx_IterFinish(void) {
 #if CYTHON_COMPILING_IN_CPYTHON
     PyThreadState *tstate = PyThreadState_GET();
     PyObject* exc_type = tstate->curexc_type;
@@ -5330,8 +6425,59 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObjec
 #endif
 }
 
+/* PyObjectCallNoArg */
+    #if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func) {
+#ifdef __Pyx_CyFunction_USED
+    if (likely(PyCFunction_Check(func) || PyObject_TypeCheck(func, __pyx_CyFunctionType))) {
+#else
+    if (likely(PyCFunction_Check(func))) {
+#endif
+        if (likely(PyCFunction_GET_FLAGS(func) & METH_NOARGS)) {
+            return __Pyx_PyObject_CallMethO(func, NULL);
+        }
+    }
+    return __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL);
+}
+#endif
+
+/* PyObjectCallMethod0 */
+      static PyObject* __Pyx_PyObject_CallMethod0(PyObject* obj, PyObject* method_name) {
+    PyObject *method, *result = NULL;
+    method = __Pyx_PyObject_GetAttrStr(obj, method_name);
+    if (unlikely(!method)) goto bad;
+#if CYTHON_COMPILING_IN_CPYTHON
+    if (likely(PyMethod_Check(method))) {
+        PyObject *self = PyMethod_GET_SELF(method);
+        if (likely(self)) {
+            PyObject *function = PyMethod_GET_FUNCTION(method);
+            result = __Pyx_PyObject_CallOneArg(function, self);
+            Py_DECREF(method);
+            return result;
+        }
+    }
+#endif
+    result = __Pyx_PyObject_CallNoArg(method);
+    Py_DECREF(method);
+bad:
+    return result;
+}
+
+/* RaiseNeedMoreValuesToUnpack */
+      static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index) {
+    PyErr_Format(PyExc_ValueError,
+                 "need more than %" CYTHON_FORMAT_SSIZE_T "d value%.1s to unpack",
+                 index, (index == 1) ? "" : "s");
+}
+
+/* RaiseTooManyValuesToUnpack */
+      static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected) {
+    PyErr_Format(PyExc_ValueError,
+                 "too many values to unpack (expected %" CYTHON_FORMAT_SSIZE_T "d)", expected);
+}
+
 /* UnpackItemEndCheck */
-  static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected) {
+      static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected) {
     if (unlikely(retval)) {
         Py_DECREF(retval);
         __Pyx_RaiseTooManyValuesError(expected);
@@ -5342,8 +6488,209 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObjec
     return 0;
 }
 
+/* RaiseNoneIterError */
+      static CYTHON_INLINE void __Pyx_RaiseNoneNotIterableError(void) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
+}
+
+/* UnpackTupleError */
+      static void __Pyx_UnpackTupleError(PyObject *t, Py_ssize_t index) {
+    if (t == Py_None) {
+      __Pyx_RaiseNoneNotIterableError();
+    } else if (PyTuple_GET_SIZE(t) < index) {
+      __Pyx_RaiseNeedMoreValuesError(PyTuple_GET_SIZE(t));
+    } else {
+      __Pyx_RaiseTooManyValuesError(index);
+    }
+}
+
+/* UnpackTuple2 */
+      static CYTHON_INLINE int __Pyx_unpack_tuple2(PyObject* tuple, PyObject** pvalue1, PyObject** pvalue2,
+                                             int is_tuple, int has_known_size, int decref_tuple) {
+    Py_ssize_t index;
+    PyObject *value1 = NULL, *value2 = NULL, *iter = NULL;
+    if (!is_tuple && unlikely(!PyTuple_Check(tuple))) {
+        iternextfunc iternext;
+        iter = PyObject_GetIter(tuple);
+        if (unlikely(!iter)) goto bad;
+        if (decref_tuple) { Py_DECREF(tuple); tuple = NULL; }
+        iternext = Py_TYPE(iter)->tp_iternext;
+        value1 = iternext(iter); if (unlikely(!value1)) { index = 0; goto unpacking_failed; }
+        value2 = iternext(iter); if (unlikely(!value2)) { index = 1; goto unpacking_failed; }
+        if (!has_known_size && unlikely(__Pyx_IternextUnpackEndCheck(iternext(iter), 2))) goto bad;
+        Py_DECREF(iter);
+    } else {
+        if (!has_known_size && unlikely(PyTuple_GET_SIZE(tuple) != 2)) {
+            __Pyx_UnpackTupleError(tuple, 2);
+            goto bad;
+        }
+#if CYTHON_COMPILING_IN_PYPY
+        value1 = PySequence_ITEM(tuple, 0);
+        if (unlikely(!value1)) goto bad;
+        value2 = PySequence_ITEM(tuple, 1);
+        if (unlikely(!value2)) goto bad;
+#else
+        value1 = PyTuple_GET_ITEM(tuple, 0);
+        value2 = PyTuple_GET_ITEM(tuple, 1);
+        Py_INCREF(value1);
+        Py_INCREF(value2);
+#endif
+        if (decref_tuple) { Py_DECREF(tuple); }
+    }
+    *pvalue1 = value1;
+    *pvalue2 = value2;
+    return 0;
+unpacking_failed:
+    if (!has_known_size && __Pyx_IterFinish() == 0)
+        __Pyx_RaiseNeedMoreValuesError(index);
+bad:
+    Py_XDECREF(iter);
+    Py_XDECREF(value1);
+    Py_XDECREF(value2);
+    if (decref_tuple) { Py_XDECREF(tuple); }
+    return -1;
+}
+
+/* dict_iter */
+      static CYTHON_INLINE PyObject* __Pyx_dict_iterator(PyObject* iterable, int is_dict, PyObject* method_name,
+                                                   Py_ssize_t* p_orig_length, int* p_source_is_dict) {
+    is_dict = is_dict || likely(PyDict_CheckExact(iterable));
+    *p_source_is_dict = is_dict;
+#if !CYTHON_COMPILING_IN_PYPY
+    if (is_dict) {
+        *p_orig_length = PyDict_Size(iterable);
+        Py_INCREF(iterable);
+        return iterable;
+    }
+#endif
+    *p_orig_length = 0;
+    if (method_name) {
+        PyObject* iter;
+        iterable = __Pyx_PyObject_CallMethod0(iterable, method_name);
+        if (!iterable)
+            return NULL;
+#if !CYTHON_COMPILING_IN_PYPY
+        if (PyTuple_CheckExact(iterable) || PyList_CheckExact(iterable))
+            return iterable;
+#endif
+        iter = PyObject_GetIter(iterable);
+        Py_DECREF(iterable);
+        return iter;
+    }
+    return PyObject_GetIter(iterable);
+}
+static CYTHON_INLINE int __Pyx_dict_iter_next(
+        PyObject* iter_obj, CYTHON_NCP_UNUSED Py_ssize_t orig_length, CYTHON_NCP_UNUSED Py_ssize_t* ppos,
+        PyObject** pkey, PyObject** pvalue, PyObject** pitem, int source_is_dict) {
+    PyObject* next_item;
+#if !CYTHON_COMPILING_IN_PYPY
+    if (source_is_dict) {
+        PyObject *key, *value;
+        if (unlikely(orig_length != PyDict_Size(iter_obj))) {
+            PyErr_SetString(PyExc_RuntimeError, "dictionary changed size during iteration");
+            return -1;
+        }
+        if (unlikely(!PyDict_Next(iter_obj, ppos, &key, &value))) {
+            return 0;
+        }
+        if (pitem) {
+            PyObject* tuple = PyTuple_New(2);
+            if (unlikely(!tuple)) {
+                return -1;
+            }
+            Py_INCREF(key);
+            Py_INCREF(value);
+            PyTuple_SET_ITEM(tuple, 0, key);
+            PyTuple_SET_ITEM(tuple, 1, value);
+            *pitem = tuple;
+        } else {
+            if (pkey) {
+                Py_INCREF(key);
+                *pkey = key;
+            }
+            if (pvalue) {
+                Py_INCREF(value);
+                *pvalue = value;
+            }
+        }
+        return 1;
+    } else if (PyTuple_CheckExact(iter_obj)) {
+        Py_ssize_t pos = *ppos;
+        if (unlikely(pos >= PyTuple_GET_SIZE(iter_obj))) return 0;
+        *ppos = pos + 1;
+        next_item = PyTuple_GET_ITEM(iter_obj, pos);
+        Py_INCREF(next_item);
+    } else if (PyList_CheckExact(iter_obj)) {
+        Py_ssize_t pos = *ppos;
+        if (unlikely(pos >= PyList_GET_SIZE(iter_obj))) return 0;
+        *ppos = pos + 1;
+        next_item = PyList_GET_ITEM(iter_obj, pos);
+        Py_INCREF(next_item);
+    } else
+#endif
+    {
+        next_item = PyIter_Next(iter_obj);
+        if (unlikely(!next_item)) {
+            return __Pyx_IterFinish();
+        }
+    }
+    if (pitem) {
+        *pitem = next_item;
+    } else if (pkey && pvalue) {
+        if (__Pyx_unpack_tuple2(next_item, pkey, pvalue, source_is_dict, source_is_dict, 1))
+            return -1;
+    } else if (pkey) {
+        *pkey = next_item;
+    } else {
+        *pvalue = next_item;
+    }
+    return 1;
+}
+
+/* MergeKeywords */
+      static int __Pyx_MergeKeywords(PyObject *kwdict, PyObject *source_mapping) {
+    PyObject *iter, *key = NULL, *value = NULL;
+    int source_is_dict, result;
+    Py_ssize_t orig_length, ppos = 0;
+    iter = __Pyx_dict_iterator(source_mapping, 0, __pyx_n_s_items, &orig_length, &source_is_dict);
+    if (unlikely(!iter)) {
+        PyObject *args;
+        if (!PyErr_ExceptionMatches(PyExc_AttributeError)) goto bad;
+        PyErr_Clear();
+        args = PyTuple_Pack(1, source_mapping);
+        if (likely(args)) {
+            PyObject *fallback = PyObject_Call((PyObject*)&PyDict_Type, args, NULL);
+            Py_DECREF(args);
+            if (likely(fallback)) {
+                iter = __Pyx_dict_iterator(fallback, 1, __pyx_n_s_items, &orig_length, &source_is_dict);
+                Py_DECREF(fallback);
+            }
+        }
+        if (unlikely(!iter)) goto bad;
+    }
+    while (1) {
+        result = __Pyx_dict_iter_next(iter, orig_length, &ppos, &key, &value, NULL, source_is_dict);
+        if (unlikely(result < 0)) goto bad;
+        if (!result) break;
+        if (unlikely(PyDict_Contains(kwdict, key))) {
+            __Pyx_RaiseDoubleKeywordsError("function", key);
+            result = -1;
+        } else {
+            result = PyDict_SetItem(kwdict, key, value);
+        }
+        Py_DECREF(key);
+        Py_DECREF(value);
+        if (unlikely(result < 0)) goto bad;
+    }
+    Py_XDECREF(iter);
+    return 0;
+bad:
+    Py_XDECREF(iter);
+    return -1;
+}
+
 /* bytes_tailmatch */
-  static int __Pyx_PyBytes_SingleTailmatch(PyObject* self, PyObject* arg,
+      static int __Pyx_PyBytes_SingleTailmatch(PyObject* self, PyObject* arg,
                                          Py_ssize_t start, Py_ssize_t end, int direction) {
     const char* self_ptr = PyBytes_AS_STRING(self);
     Py_ssize_t self_len = PyBytes_GET_SIZE(self);
@@ -5414,7 +6761,7 @@ static int __Pyx_PyBytes_Tailmatch(PyObject* self, PyObject* substr,
 }
 
 /* unicode_tailmatch */
-  static int __Pyx_PyUnicode_Tailmatch(PyObject* s, PyObject* substr,
+      static int __Pyx_PyUnicode_Tailmatch(PyObject* s, PyObject* substr,
                                      Py_ssize_t start, Py_ssize_t end, int direction) {
     if (unlikely(PyTuple_Check(substr))) {
         Py_ssize_t i, count = PyTuple_GET_SIZE(substr);
@@ -5439,7 +6786,7 @@ static int __Pyx_PyBytes_Tailmatch(PyObject* self, PyObject* substr,
 }
 
 /* str_tailmatch */
-  static CYTHON_INLINE int __Pyx_PyStr_Tailmatch(PyObject* self, PyObject* arg, Py_ssize_t start,
+      static CYTHON_INLINE int __Pyx_PyStr_Tailmatch(PyObject* self, PyObject* arg, Py_ssize_t start,
                                                Py_ssize_t end, int direction)
 {
     if (PY_MAJOR_VERSION < 3)
@@ -5448,22 +6795,8 @@ static int __Pyx_PyBytes_Tailmatch(PyObject* self, PyObject* substr,
         return __Pyx_PyUnicode_Tailmatch(self, arg, start, end, direction);
 }
 
-/* GetBuiltinName */
-  static PyObject *__Pyx_GetBuiltinName(PyObject *name) {
-    PyObject* result = __Pyx_PyObject_GetAttrStr(__pyx_b, name);
-    if (unlikely(!result)) {
-        PyErr_Format(PyExc_NameError,
-#if PY_MAJOR_VERSION >= 3
-            "name '%U' is not defined", name);
-#else
-            "name '%.200s' is not defined", PyString_AS_STRING(name));
-#endif
-    }
-    return result;
-}
-
 /* Import */
-  static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level) {
+      static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level) {
     PyObject *empty_list = 0;
     PyObject *module = 0;
     PyObject *global_dict = 0;
@@ -5537,7 +6870,7 @@ bad:
 }
 
 /* GetModuleGlobalName */
-  static CYTHON_INLINE PyObject *__Pyx_GetModuleGlobalName(PyObject *name) {
+      static CYTHON_INLINE PyObject *__Pyx_GetModuleGlobalName(PyObject *name) {
     PyObject *result;
 #if CYTHON_COMPILING_IN_CPYTHON
     result = PyDict_GetItem(__pyx_d, name);
@@ -5554,24 +6887,8 @@ bad:
     return result;
 }
 
-/* PyObjectCallNoArg */
-    #if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func) {
-#ifdef __Pyx_CyFunction_USED
-    if (likely(PyCFunction_Check(func) || PyObject_TypeCheck(func, __pyx_CyFunctionType))) {
-#else
-    if (likely(PyCFunction_Check(func))) {
-#endif
-        if (likely(PyCFunction_GET_FLAGS(func) & METH_NOARGS)) {
-            return __Pyx_PyObject_CallMethO(func, NULL);
-        }
-    }
-    return __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL);
-}
-#endif
-
 /* GetItemInt */
-      static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j) {
+        static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j) {
     PyObject *r;
     if (!j) return NULL;
     r = PyObject_GetItem(o, j);
@@ -5652,7 +6969,7 @@ static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, 
 }
 
 /* CodeObjectCache */
-      static int __pyx_bisect_code_objects(__Pyx_CodeObjectCacheEntry* entries, int count, int code_line) {
+        static int __pyx_bisect_code_objects(__Pyx_CodeObjectCacheEntry* entries, int count, int code_line) {
     int start = 0, mid = 0, end = count - 1;
     if (end >= 0 && code_line > entries[end].code_line) {
         return count;
@@ -5732,7 +7049,7 @@ static void __pyx_insert_code_object(int code_line, PyCodeObject* code_object) {
 }
 
 /* AddTraceback */
-      #include "compile.h"
+        #include "compile.h"
 #include "frameobject.h"
 #include "traceback.h"
 static PyCodeObject* __Pyx_CreateCodeObjectForTraceback(
@@ -5813,7 +7130,7 @@ bad:
 }
 
 /* CIntToPy */
-      static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
+        static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
     const long neg_one = (long) -1, const_zero = (long) 0;
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
@@ -5840,7 +7157,7 @@ bad:
 }
 
 /* CIntFromPyVerify */
-      #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
+        #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
     __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
 #define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
     __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
@@ -5862,7 +7179,7 @@ bad:
     }
 
 /* CIntFromPy */
-      static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
+        static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
     const int neg_one = (int) -1, const_zero = (int) 0;
     const int is_unsigned = neg_one > const_zero;
 #if PY_MAJOR_VERSION < 3
@@ -6047,7 +7364,7 @@ raise_neg_overflow:
 }
 
 /* CIntFromPy */
-      static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *x) {
+        static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *x) {
     const size_t neg_one = (size_t) -1, const_zero = (size_t) 0;
     const int is_unsigned = neg_one > const_zero;
 #if PY_MAJOR_VERSION < 3
@@ -6232,7 +7549,7 @@ raise_neg_overflow:
 }
 
 /* CIntFromPy */
-      static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
+        static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
     const long neg_one = (long) -1, const_zero = (long) 0;
     const int is_unsigned = neg_one > const_zero;
 #if PY_MAJOR_VERSION < 3
@@ -6417,7 +7734,7 @@ raise_neg_overflow:
 }
 
 /* CheckBinaryVersion */
-      static int __Pyx_check_binary_version(void) {
+        static int __Pyx_check_binary_version(void) {
     char ctversion[4], rtversion[4];
     PyOS_snprintf(ctversion, 4, "%d.%d", PY_MAJOR_VERSION, PY_MINOR_VERSION);
     PyOS_snprintf(rtversion, 4, "%s", Py_GetVersion());
@@ -6433,7 +7750,7 @@ raise_neg_overflow:
 }
 
 /* InitStrings */
-      static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {
+        static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {
     while (t->p) {
         #if PY_MAJOR_VERSION < 3
         if (t->is_unicode) {

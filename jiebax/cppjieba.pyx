@@ -53,6 +53,16 @@ cdef extern from "TextRankExtractor.hpp" namespace "cppjieba":
 
 
 
+
+# def jiebax_preprocessor(func):
+
+#     def func_wrapper(*args, **kwargs):
+#         if type(text) == unicode:
+#             text = text.encode("utf-8")
+
+#         return text
+
+
 cdef class JiebaX:
     
     # hold a C++ instance which we're wrapping
@@ -69,22 +79,42 @@ cdef class JiebaX:
     just return vector[...], since they can be interpreted as list and other stuff
     """
 
+    # utils
+
+    def convert_encode(self, text):
+        if type(text) == unicode:
+            text = text.encode("utf-8")
+
+        return text
+
     # methods borrow from cppjieba
 
-    def cut(self, string text):
+    def cut(self, text, unicode_flag=False):
+        text = self.convert_encode(text)
+
         cdef vector[string] words_vector
         self.thisptr.Cut(text, words_vector, 1)
         # cdef list words = words_vector
+
+        cdef list words_unicode
+        if unicode_flag:
+            words_unicode = words_vector
+            words_unicode = [unicode(word, "utf-8") for word in words_unicode]
+            return words_unicode
         
         return words_vector
 
-    def posseg(self, string text):
+    def posseg(self, text):
+        text = self.convert_encode(text)
+
         cdef vector[pair[string, string]] words_pos_vector
         self.thisptr.Tag(text, words_pos_vector)
 
         return words_pos_vector
 
-    def posseg_nav(self, string text, return_pair=False):
+    def posseg_nav(self, text, return_pair=False):
+        text = self.convert_encode(text)
+
         cdef vector[pair[string, string]] words_pos_vector
         self.thisptr.TagNAV(text, words_pos_vector)
 
@@ -108,7 +138,9 @@ cdef class JiebaX:
 
         return words
 
-    def posseg_filter(self, string text, set ifin_set=set(), list startswith_list=list(), return_pair=False):
+    def posseg_filter(self, text, set ifin_set=set(), list startswith_list=list(), return_pair=False):
+        text = self.convert_encode(text)
+        
         cdef vector[pair[string, string]] words_pos_vector
         cdef vector[string] words_vector
         
@@ -128,6 +160,19 @@ cdef class JiebaX:
             return words_pos_vector
         else:
             return words_vector
+
+    # for backwards compability
+
+    def cut_docs_multi(self, docs, pos_tags=[], n_threads=1):
+        if n_threads < 2:
+            doc_words_list = [self.posseg_nav(doc, return_pair=False) for doc in docs]
+        else:
+            raise Exception("no multithread implementation")
+
+        return doc_words_list
+
+    def cut_docs(self, *args, **kwargs):
+        return self.cut_docs_multi(*args, n_threads=1, **kwargs)
 
     # new added methods
 
