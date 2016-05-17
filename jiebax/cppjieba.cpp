@@ -7,9 +7,6 @@
             "jiebax/Jieba.hpp", 
             "jiebax/TextRankExtractor.hpp"
         ], 
-        "extra_compile_args": [
-            "-std=c++11"
-        ], 
         "language": "c++"
     }
 }

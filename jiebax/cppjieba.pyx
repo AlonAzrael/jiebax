@@ -218,13 +218,16 @@ cdef class JiebaX:
         cdef string tag
         cdef list return_list = []
 
+        cdef string tag_a = "a"
+        cdef string tag_v = "v"
+
         if return_pair:
             for word, tag in self.posseg(text):
-                if tag.startswith("n") or tag == "a" or tag == "v":
+                if tag.startswith("n") or tag == tag_a or tag == tag_v:
                     return_list.append((word, tag))
         else:
             for word, tag in self.posseg(text):
-                if tag.startswith("n") or tag == "a" or tag == "v":
+                if tag.startswith("n") or tag == tag_a or tag == tag_v:
                     return_list.append(word)
 
         return return_list
