@@ -31,6 +31,9 @@ MODEL_PATH = DATA_PATH_DICT["model_path"]
 STOPWORDS_PATH = DATA_PATH_DICT["stop_words_filepath"]
 
 
+from pkg_resources import resource_string
+
+
 # declare cpp class from cpp source file
 cdef extern from "Jieba.hpp" namespace "cppjieba":
     cdef cppclass Jieba:

@@ -1,11 +1,18 @@
 
+import sys
+argv = sys.argv
 
-try:
-    from setuptools import setup
-    from setuptools.extension import Extension
-except ImportError:
+if len(argv) > 1 and argv[1] == "setuptools":
+    try:
+        from setuptools import setup
+        from setuptools.extension import Extension
+    except ImportError:
+        from distutils.core import setup
+        from distutils.extension import Extension
+else:
     from distutils.core import setup
     from distutils.extension import Extension
+
 
 from Cython.Build import cythonize
 
@@ -41,6 +48,26 @@ setup(name="jiebax", ext_modules=cythonize(extensions),
     packages=['jiebax'],
     package_dir={'jiebax':'jiebax'},
     package_data={'jiebax':['*.*']}
+
+    license="MIT",
+    classifiers=[
+      'Intended Audience :: Developers',
+      'License :: OSI Approved :: MIT License',
+      'Operating System :: OS Independent',
+      'Natural Language :: Chinese (Simplified)',
+      'Natural Language :: Chinese (Traditional)',
+      'Programming Language :: Python',
+      'Programming Language :: Python :: 2',
+      'Programming Language :: Python :: 2.6',
+      'Programming Language :: Python :: 2.7',
+      'Programming Language :: Python :: 3',
+      'Programming Language :: Python :: 3.2',
+      'Programming Language :: Python :: 3.3',
+      'Programming Language :: Python :: 3.4',
+      'Topic :: Text Processing',
+      'Topic :: Text Processing :: Indexing',
+      'Topic :: Text Processing :: Linguistic',
+    ],
 )
 
 
