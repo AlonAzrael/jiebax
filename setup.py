@@ -47,7 +47,7 @@ extensions = [Extension(
 setup(name="jiebax", ext_modules=cythonize(extensions), 
     packages=['jiebax'],
     package_dir={'jiebax':'jiebax'},
-    package_data={'jiebax':['*.*']}
+    package_data={'jiebax':['*.*']},
 
     license="MIT",
     classifiers=[
