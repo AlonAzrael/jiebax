@@ -108,7 +108,8 @@ def keywords_benchmark():
 
     textrank = TextRankWords(JIEBAX)
 
-    words = JIEBAX.posseg_nav(content, return_pair=False)
+    # words = JIEBAX.posseg_nav(content, return_pair=False)
+    words = JIEBAX.posseg_filter(content, startswith_list=["n"], return_pair=False)
     # print len(words)
 
     start_time = time.time()

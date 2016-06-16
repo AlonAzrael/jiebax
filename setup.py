@@ -25,8 +25,8 @@ if _platform == "linux" or _platform == "linux2":
     pass
 
 elif _platform == "darwin":
-    os.environ["CC"]= "/usr/local/Cellar/gcc/5.2.0/bin/g++-5"
-    os.environ["CXX"]= "/usr/local/Cellar/gcc/5.2.0/bin/g++-5"
+    os.environ["CC"]= "/usr/local/Cellar/gcc/5.3.0/bin/g++-5"
+    os.environ["CXX"]= "/usr/local/Cellar/gcc/5.3.0/bin/g++-5"
     os.environ["ARCHFLAGS"]= "-arch x86_64"
     os.environ["MACOSX_DEPLOYMENT_TARGET"]= "10.10"
 

@@ -17,6 +17,7 @@ import site
 SITEPKGS_PATH = site.getsitepackages()[0]
 DATA_PATH_DICT = dict(dict_path="jieba.dict.better.txt", model_path="hmm_model.utf8", stop_words_filepath="stop_words.utf8")
 
+
 for name, fpath in DATA_PATH_DICT.items():
     temp = os.path.join(SITEPKGS_PATH, "jiebax", fpath)
     # print temp
@@ -32,6 +33,11 @@ STOPWORDS_PATH = DATA_PATH_DICT["stop_words_filepath"]
 
 
 from pkg_resources import resource_string
+
+
+
+
+
 
 
 # declare cpp class from cpp source file
@@ -177,6 +183,13 @@ cdef class JiebaX:
     def cut_docs(self, *args, **kwargs):
         return self.cut_docs_multi(*args, n_threads=1, **kwargs)
 
+    # utils 
+
+    def remove_tags(self):
+        cdef int x
+        x = 1
+        print "remove_tags", x
+
     # new added methods
 
     def _DEPRE_posseg_filter(self, string text, list startswith_list=[], set ifin_set=set(), return_pair=False):
@@ -263,9 +276,6 @@ cdef class JiebaXTextRank:
         self.thisptr.ExtractByWords(words_vector, keyword_weight_list, max_words, n_span, max_rank_epoch)
 
         return keyword_weight_list
-
-
-
 
 
 
