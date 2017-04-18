@@ -177,7 +177,7 @@ cdef class JiebaX:
         else:
             return words_vector
 
-    def cut_multi(self, text_list, unicode_flag=False, n_jobs=2):
+    def cut_multi(self, text_list, unicode_flag=False,int n_jobs=2):
         text_list = [self.convert_encode(t) for t in text_list]
         cdef:
             vector[string] text_vect = text_list
