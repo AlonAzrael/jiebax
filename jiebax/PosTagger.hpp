@@ -115,44 +115,48 @@ class PosTagger {
         XLOG(ERROR) << "Decode failed.";
         return false;
       }
+      
       tmp = dict->Find(runes.begin(), runes.end());
+      append_flag = false;
+      
+      // get tag_to_check
+      if (tmp != NULL) tag_to_check = tmp->tag;
       if (tmp == NULL || tmp->tag.empty()) {
-        // just ignore x for now
-        // res.push_back(make_pair(*itr, SpecialRule(runes)));
-      } else {
-        // check for conditions
-        tag_to_check = tmp->tag;
-        append_flag = false;
-
-        // if in
-        if (ifin_hashset.find(tag_to_check) != ifin_hashset.end())
-        {
-          append_flag = true;
-        } 
-        // startswith
-        else {
-          tag_head = tag_to_check.substr(0, 1);
-          for (vector<string>::iterator i = startswith_list.begin(); i != startswith_list.end(); ++i)
-          {
-            if (tag_head == *i){
-              append_flag = true;
-              break;
-            }
-          }
-        }
-
-        // append ?
-        if (append_flag)
-        {
-          if (return_pair > 0)
-          {
-            res.push_back(make_pair(*itr, tag_to_check));
-          } else {
-            res_no_pair.push_back(*itr);
-          }
-        }
-
+        // dont ignore x 
+        pair<string, string> temp_pair = make_pair(*itr, SpecialRule(runes));
+        tag_to_check = temp_pair.second;
       }
+
+      // check for conditions
+
+      // if in
+      if (ifin_hashset.find(tag_to_check) != ifin_hashset.end())
+      {
+        append_flag = true;
+      } 
+      // startswith
+      else {
+        tag_head = tag_to_check.substr(0, 1);
+        for (vector<string>::iterator i = startswith_list.begin(); i != startswith_list.end(); ++i)
+        {
+          if (tag_head == *i){
+            append_flag = true;
+            break;
+          }
+        }
+      }
+
+      // append ?
+      if (append_flag)
+      {
+        if (return_pair > 0)
+        {
+          res.push_back(make_pair(*itr, tag_to_check));
+        } else {
+          res_no_pair.push_back(*itr);
+        }
+      }
+
     }
     return !res.empty();
   }

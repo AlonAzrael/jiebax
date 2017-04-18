@@ -11,6 +11,8 @@ from libcpp.set cimport set as cppset
 
 from cython.operator cimport dereference as deref, preincrement as inc
 
+from cython.parallel cimport *
+
 import os
 import site
 
@@ -46,7 +48,7 @@ cdef extern from "Jieba.hpp" namespace "cppjieba":
         # Rectangle(int, int, int, int) except +
         Jieba(const string& , const string& , const string& ) except +
         # int x0, y0, x1, y1 # variable
-        void Cut(const string& , vector[string]& , bint ) except +
+        void Cut(const string& , vector[string]& , bint ) nogil except +
         bint Tag(const string& , vector[pair[string, string] ]& ) except +
         bint TagNAV(const string& , vector[pair[string, string] ]& ) except +
         bint TagFilter(const string& src, vector[pair[string, string] ]& res, vector[string]& res_no_pair, vector[string]& ifin_list, vector[string]& startswith_list, int return_pair) except +
@@ -77,10 +79,15 @@ cdef class JiebaX:
     # hold a C++ instance which we're wrapping
     cdef Jieba *thisptr
     # cdef Jieba& thisref
+    cdef string dict_path, model_path, user_dict_path
     
     def __cinit__(self, string dict_path=DICT_PATH, string model_path=MODEL_PATH, string user_dict_path=""):
+        self.dict_path = dict_path
+        self.model_path = model_path
+        self.user_dict_path = user_dict_path
         self.thisptr = new Jieba(dict_path, model_path, user_dict_path)
         # self.thisref = deref(self.thisptr)
+
     def __dealloc__(self):
         del self.thisptr
 
@@ -169,6 +176,36 @@ cdef class JiebaX:
             return words_pos_vector
         else:
             return words_vector
+
+    def cut_multi(self, text_list, unicode_flag=False, n_jobs=2):
+        text_list = [self.convert_encode(t) for t in text_list]
+        cdef:
+            vector[string] text_vect = text_list
+            vector[vector[string]] words_vector_job
+            int i = 0
+            Jieba *jbp = self.thisptr
+
+        words_vector_job.resize(text_vect.size())
+
+        with nogil:
+            for i in prange(
+                text_vect.size(), 
+                num_threads=n_jobs
+            ):
+                # jbp = new Jieba(self.dict_path, self.model_path, self.user_dict_path)
+                jbp.Cut(
+                    text_vect[i], 
+                    words_vector_job[i], 
+                    1
+                )
+
+        cdef list words_unicode_job = [],  words_unicode = []
+        if unicode_flag:
+            words_unicode_job = words_vector_job
+            words_unicode = [[unicode(word, "utf-8") for word in words_unicode] for words_unicode in words_unicode_job]
+            return words_unicode_job
+        
+        return words_vector_job
 
     # for backwards compability
 
