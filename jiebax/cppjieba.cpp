@@ -1074,7 +1074,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_6cut(struct __pyx_obj_6jieba
 static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_8posseg(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_text); /* proto */
 static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_10posseg_nav(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_text, PyObject *__pyx_v_return_pair); /* proto */
 static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_12posseg_filter(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_text, PyObject *__pyx_v_ifin_set, PyObject *__pyx_v_startswith_list, PyObject *__pyx_v_return_pair); /* proto */
-static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14cut_multi(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_text_list, PyObject *__pyx_v_unicode_flag, CYTHON_UNUSED PyObject *__pyx_v_n_jobs); /* proto */
+static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14cut_multi(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_text_list, PyObject *__pyx_v_unicode_flag, PyObject *__pyx_v_n_jobs); /* proto */
 static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_16cut_docs_multi(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_docs, CYTHON_UNUSED PyObject *__pyx_v_pos_tags, PyObject *__pyx_v_n_threads); /* proto */
 static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_18cut_docs(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_args, PyObject *__pyx_v_kwargs); /* proto */
 static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_20remove_tags(CYTHON_UNUSED struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self); /* proto */
@@ -2346,7 +2346,7 @@ static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_15cut_multi(PyObject *__pyx_
 static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_15cut_multi(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_text_list = 0;
   PyObject *__pyx_v_unicode_flag = 0;
-  CYTHON_UNUSED PyObject *__pyx_v_n_jobs = 0;
+  PyObject *__pyx_v_n_jobs = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("cut_multi (wrapper)", 0);
@@ -2412,7 +2412,7 @@ static PyObject *__pyx_pw_6jiebax_8cppjieba_6JiebaX_15cut_multi(PyObject *__pyx_
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14cut_multi(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_text_list, PyObject *__pyx_v_unicode_flag, CYTHON_UNUSED PyObject *__pyx_v_n_jobs) {
+static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14cut_multi(struct __pyx_obj_6jiebax_8cppjieba_JiebaX *__pyx_v_self, PyObject *__pyx_v_text_list, PyObject *__pyx_v_unicode_flag, PyObject *__pyx_v_n_jobs) {
   std::vector<std::string>  __pyx_v_text_vect;
   std::vector<std::vector<std::string> >  __pyx_v_words_vector_job;
   int __pyx_v_i;
@@ -2559,7 +2559,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14cut_multi(struct __pyx_obj
  * 
  *         words_vector_job.resize(text_vect.size())             # <<<<<<<<<<<<<<
  * 
- *         with nogil:
+ *         # print "cut_multi n_jobs:", n_jobs
  */
   try {
     __pyx_v_words_vector_job.resize(__pyx_v_text_vect.size());
@@ -2568,10 +2568,10 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14cut_multi(struct __pyx_obj
     __PYX_ERR(0, 188, __pyx_L1_error)
   }
 
-  /* "jiebax/cppjieba.pyx":190
- *         words_vector_job.resize(text_vect.size())
+  /* "jiebax/cppjieba.pyx":191
  * 
- *         with nogil:             # <<<<<<<<<<<<<<
+ *         # print "cut_multi n_jobs:", n_jobs
+ *         with nogil, parallel(num_threads=n_jobs):             # <<<<<<<<<<<<<<
  *             for i in prange(
  *                 text_vect.size(),
  */
@@ -2581,18 +2581,7 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14cut_multi(struct __pyx_obj
       Py_UNBLOCK_THREADS
       #endif
       /*try:*/ {
-
-        /* "jiebax/cppjieba.pyx":192
- *         with nogil:
- *             for i in prange(
- *                 text_vect.size(),             # <<<<<<<<<<<<<<
- *                 num_threads=n_jobs
- *             ):
- */
-        __pyx_t_11 = __pyx_v_text_vect.size();
-        if (1 == 0) abort();
         {
-            int __pyx_parallel_temp0 = 0xbad0bad0;
             const char *__pyx_parallel_filename = NULL; int __pyx_parallel_lineno = 0, __pyx_parallel_clineno = 0;
             PyObject *__pyx_parallel_exc_type = NULL, *__pyx_parallel_exc_value = NULL, *__pyx_parallel_exc_tb = NULL;
             int __pyx_parallel_why;
@@ -2603,102 +2592,161 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14cut_multi(struct __pyx_obj
                 #define likely(x)   (x)
                 #define unlikely(x) (x)
             #endif
-            __pyx_t_13 = (__pyx_t_11 - 0 + 1 - 1/abs(1)) / 1;
-            if (__pyx_t_13 > 0)
+            #ifdef _OPENMP
+            #pragma omp parallel  private(__pyx_t_11, __pyx_t_12, __pyx_t_13) private(__pyx_filename, __pyx_lineno, __pyx_clineno) shared(__pyx_parallel_why, __pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb) num_threads(__pyx_v_n_jobs)
+            #endif /* _OPENMP */
             {
                 #ifdef _OPENMP
-                #pragma omp parallel num_threads(__pyx_v_n_jobs) private(__pyx_filename, __pyx_lineno, __pyx_clineno) shared(__pyx_parallel_why, __pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb)
+                #ifdef WITH_THREAD
+                PyGILState_STATE __pyx_gilstate_save = PyGILState_Ensure();
+                #endif
+                Py_BEGIN_ALLOW_THREADS
                 #endif /* _OPENMP */
-                {
-                    #ifdef _OPENMP
-                    #ifdef WITH_THREAD
-                    PyGILState_STATE __pyx_gilstate_save = PyGILState_Ensure();
-                    #endif
-                    Py_BEGIN_ALLOW_THREADS
-                    #endif /* _OPENMP */
-                    #ifdef _OPENMP
-                    #pragma omp for firstprivate(__pyx_v_i) lastprivate(__pyx_v_i)
-                    #endif /* _OPENMP */
-                    for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_13; __pyx_t_12++){
-                        if (__pyx_parallel_why < 2)
-                        {
-                            __pyx_v_i = (int)(0 + 1 * __pyx_t_12);
 
-                            /* "jiebax/cppjieba.pyx":196
+                /* "jiebax/cppjieba.pyx":193
+ *         with nogil, parallel(num_threads=n_jobs):
+ *             for i in prange(
+ *                 text_vect.size(),             # <<<<<<<<<<<<<<
+ *             ):
+ *                 # jbp = new Jieba(self.dict_path, self.model_path, self.user_dict_path)
+ */
+                __pyx_t_11 = __pyx_v_text_vect.size();
+                if (1 == 0) abort();
+                {
+                    int __pyx_parallel_temp0 = 0xbad0bad0;
+                    const char *__pyx_parallel_filename = NULL; int __pyx_parallel_lineno = 0, __pyx_parallel_clineno = 0;
+                    PyObject *__pyx_parallel_exc_type = NULL, *__pyx_parallel_exc_value = NULL, *__pyx_parallel_exc_tb = NULL;
+                    int __pyx_parallel_why;
+                    __pyx_parallel_why = 0;
+                    __pyx_t_13 = (__pyx_t_11 - 0 + 1 - 1/abs(1)) / 1;
+                    if (__pyx_t_13 > 0)
+                    {
+                        #ifdef _OPENMP
+                        #pragma omp for firstprivate(__pyx_v_i) lastprivate(__pyx_v_i)
+                        #endif /* _OPENMP */
+                        for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_13; __pyx_t_12++){
+                            if (__pyx_parallel_why < 2)
+                            {
+                                __pyx_v_i = (int)(0 + 1 * __pyx_t_12);
+
+                                /* "jiebax/cppjieba.pyx":196
  *             ):
  *                 # jbp = new Jieba(self.dict_path, self.model_path, self.user_dict_path)
  *                 jbp.Cut(             # <<<<<<<<<<<<<<
  *                     text_vect[i],
  *                     words_vector_job[i],
  */
-                            try {
-                              __pyx_v_jbp->Cut((__pyx_v_text_vect[__pyx_v_i]), (__pyx_v_words_vector_job[__pyx_v_i]), 1);
-                            } catch(...) {
-                              #ifdef WITH_THREAD
-                              PyGILState_STATE __pyx_gilstate_save = PyGILState_Ensure();
-                              #endif
-                              __Pyx_CppExn2PyErr();
-                              #ifdef WITH_THREAD
-                              PyGILState_Release(__pyx_gilstate_save);
-                              #endif
-                              __PYX_ERR(0, 196, __pyx_L10_error)
-                            }
-                            goto __pyx_L13;
-                            __pyx_L10_error:;
-                            {
-                                #ifdef WITH_THREAD
-                                PyGILState_STATE __pyx_gilstate_save = PyGILState_Ensure();
-                                #endif
-                                #ifdef _OPENMP
-                                #pragma omp flush(__pyx_parallel_exc_type)
-                                #endif /* _OPENMP */
-                                if (!__pyx_parallel_exc_type) {
-                                  __Pyx_ErrFetchWithState(&__pyx_parallel_exc_type, &__pyx_parallel_exc_value, &__pyx_parallel_exc_tb);
-                                  __pyx_parallel_filename = __pyx_filename; __pyx_parallel_lineno = __pyx_lineno; __pyx_parallel_clineno = __pyx_clineno;
-                                  __Pyx_GOTREF(__pyx_parallel_exc_type);
+                                try {
+                                  __pyx_v_jbp->Cut((__pyx_v_text_vect[__pyx_v_i]), (__pyx_v_words_vector_job[__pyx_v_i]), 1);
+                                } catch(...) {
+                                  #ifdef WITH_THREAD
+                                  PyGILState_STATE __pyx_gilstate_save = PyGILState_Ensure();
+                                  #endif
+                                  __Pyx_CppExn2PyErr();
+                                  #ifdef WITH_THREAD
+                                  PyGILState_Release(__pyx_gilstate_save);
+                                  #endif
+                                  __PYX_ERR(0, 196, __pyx_L14_error)
                                 }
-                                #ifdef WITH_THREAD
-                                PyGILState_Release(__pyx_gilstate_save);
-                                #endif
+                                goto __pyx_L17;
+                                __pyx_L14_error:;
+                                {
+                                    #ifdef WITH_THREAD
+                                    PyGILState_STATE __pyx_gilstate_save = PyGILState_Ensure();
+                                    #endif
+                                    #ifdef _OPENMP
+                                    #pragma omp flush(__pyx_parallel_exc_type)
+                                    #endif /* _OPENMP */
+                                    if (!__pyx_parallel_exc_type) {
+                                      __Pyx_ErrFetchWithState(&__pyx_parallel_exc_type, &__pyx_parallel_exc_value, &__pyx_parallel_exc_tb);
+                                      __pyx_parallel_filename = __pyx_filename; __pyx_parallel_lineno = __pyx_lineno; __pyx_parallel_clineno = __pyx_clineno;
+                                      __Pyx_GOTREF(__pyx_parallel_exc_type);
+                                    }
+                                    #ifdef WITH_THREAD
+                                    PyGILState_Release(__pyx_gilstate_save);
+                                    #endif
+                                }
+                                __pyx_parallel_why = 4;
+                                goto __pyx_L16;
+                                __pyx_L16:;
+                                #ifdef _OPENMP
+                                #pragma omp critical(__pyx_parallel_lastprivates0)
+                                #endif /* _OPENMP */
+                                {
+                                    __pyx_parallel_temp0 = __pyx_v_i;
+                                }
+                                __pyx_L17:;
+                                #ifdef _OPENMP
+                                #pragma omp flush(__pyx_parallel_why)
+                                #endif /* _OPENMP */
                             }
-                            __pyx_parallel_why = 4;
-                            goto __pyx_L12;
-                            __pyx_L12:;
-                            #ifdef _OPENMP
-                            #pragma omp critical(__pyx_parallel_lastprivates0)
-                            #endif /* _OPENMP */
-                            {
-                                __pyx_parallel_temp0 = __pyx_v_i;
-                            }
-                            __pyx_L13:;
-                            #ifdef _OPENMP
-                            #pragma omp flush(__pyx_parallel_why)
-                            #endif /* _OPENMP */
                         }
                     }
-                    #ifdef _OPENMP
-                    Py_END_ALLOW_THREADS
-                    #else
-{
-#ifdef WITH_THREAD
+                    if (__pyx_parallel_exc_type) {
+                      /* This may have been overridden by a continue, break or return in another thread. Prefer the error. */
+                      __pyx_parallel_why = 4;
+                    }
+                    if (__pyx_parallel_why) {
+                      __pyx_v_i = __pyx_parallel_temp0;
+                      switch (__pyx_parallel_why) {
+                            case 4:
+                        {
+                            #ifdef WITH_THREAD
+                            PyGILState_STATE __pyx_gilstate_save = PyGILState_Ensure();
+                            #endif
+                            __Pyx_GIVEREF(__pyx_parallel_exc_type);
+                            __Pyx_ErrRestoreWithState(__pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb);
+                            __pyx_filename = __pyx_parallel_filename; __pyx_lineno = __pyx_parallel_lineno; __pyx_clineno = __pyx_parallel_clineno;
+                            #ifdef WITH_THREAD
+                            PyGILState_Release(__pyx_gilstate_save);
+                            #endif
+                        }
+                        goto __pyx_L10_error;
+                      }
+                    }
+                }
+                goto __pyx_L19;
+                __pyx_L10_error:;
+                {
+                    #ifdef WITH_THREAD
                     PyGILState_STATE __pyx_gilstate_save = PyGILState_Ensure();
                     #endif
+                    #ifdef _OPENMP
+                    #pragma omp flush(__pyx_parallel_exc_type)
                     #endif /* _OPENMP */
-                    /* Clean up any temporaries */
+                    if (!__pyx_parallel_exc_type) {
+                      __Pyx_ErrFetchWithState(&__pyx_parallel_exc_type, &__pyx_parallel_exc_value, &__pyx_parallel_exc_tb);
+                      __pyx_parallel_filename = __pyx_filename; __pyx_parallel_lineno = __pyx_lineno; __pyx_parallel_clineno = __pyx_clineno;
+                      __Pyx_GOTREF(__pyx_parallel_exc_type);
+                    }
                     #ifdef WITH_THREAD
                     PyGILState_Release(__pyx_gilstate_save);
                     #endif
-                    #ifndef _OPENMP
+                }
+                __pyx_parallel_why = 4;
+                goto __pyx_L19;
+                __pyx_L19:;
+                #ifdef _OPENMP
+                Py_END_ALLOW_THREADS
+                #else
+{
+#ifdef WITH_THREAD
+                PyGILState_STATE __pyx_gilstate_save = PyGILState_Ensure();
+                #endif
+                #endif /* _OPENMP */
+                /* Clean up any temporaries */
+                #ifdef WITH_THREAD
+                PyGILState_Release(__pyx_gilstate_save);
+                #endif
+                #ifndef _OPENMP
 }
 #endif /* _OPENMP */
-                }
             }
             if (__pyx_parallel_exc_type) {
               /* This may have been overridden by a continue, break or return in another thread. Prefer the error. */
               __pyx_parallel_why = 4;
             }
             if (__pyx_parallel_why) {
-              __pyx_v_i = __pyx_parallel_temp0;
               switch (__pyx_parallel_why) {
                     case 4:
                 {
@@ -2724,10 +2772,10 @@ static PyObject *__pyx_pf_6jiebax_8cppjieba_6JiebaX_14cut_multi(struct __pyx_obj
         #endif
       }
 
-      /* "jiebax/cppjieba.pyx":190
- *         words_vector_job.resize(text_vect.size())
+      /* "jiebax/cppjieba.pyx":191
  * 
- *         with nogil:             # <<<<<<<<<<<<<<
+ *         # print "cut_multi n_jobs:", n_jobs
+ *         with nogil, parallel(num_threads=n_jobs):             # <<<<<<<<<<<<<<
  *             for i in prange(
  *                 text_vect.size(),
  */

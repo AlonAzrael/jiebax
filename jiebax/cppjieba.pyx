@@ -187,10 +187,10 @@ cdef class JiebaX:
 
         words_vector_job.resize(text_vect.size())
 
-        with nogil:
+        # print "cut_multi n_jobs:", n_jobs
+        with nogil, parallel(num_threads=n_jobs):
             for i in prange(
                 text_vect.size(), 
-                num_threads=n_jobs
             ):
                 # jbp = new Jieba(self.dict_path, self.model_path, self.user_dict_path)
                 jbp.Cut(
