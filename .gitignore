@@ -1,7 +1,9 @@
 
 build/
+dist/
 
 **/__X_*
 __X_*
 **/*.pyc
 **/*.DS_Store
+**/*.egg*
