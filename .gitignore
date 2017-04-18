@@ -7,3 +7,4 @@ __X_*
 **/*.pyc
 **/*.DS_Store
 **/*.egg*
+**/cppjieba.cpp
