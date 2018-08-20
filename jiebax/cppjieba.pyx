@@ -63,8 +63,6 @@ cdef extern from "TextRankExtractor.hpp" namespace "cppjieba":
 
 
 
-
-
 # def jiebax_preprocessor(func):
 
 #     def func_wrapper(*args, **kwargs):
@@ -81,11 +79,11 @@ cdef class JiebaX:
     # cdef Jieba& thisref
     cdef string dict_path, model_path, user_dict_path
     
-    def __cinit__(self, string dict_path=DICT_PATH, string model_path=MODEL_PATH, string user_dict_path=""):
-        self.dict_path = dict_path
-        self.model_path = model_path
-        self.user_dict_path = user_dict_path
-        self.thisptr = new Jieba(dict_path, model_path, user_dict_path)
+    def __cinit__(self, dict_path=DICT_PATH, model_path=MODEL_PATH, user_dict_path=""):
+        self.dict_path = dict_path.encode("utf-8")
+        self.model_path = model_path.encode("utf-8")
+        self.user_dict_path = user_dict_path.encode("utf-8")
+        self.thisptr = new Jieba(self.dict_path, self.model_path, self.user_dict_path)
         # self.thisref = deref(self.thisptr)
 
     def __dealloc__(self):
@@ -98,14 +96,13 @@ cdef class JiebaX:
     # utils
 
     def convert_encode(self, text):
-        if type(text) == unicode:
-            text = text.encode("utf-8")
-
+#         if type(text) == str:
+        text = text.encode("utf-8")
         return text
 
-    # methods borrow from cppjieba
+    # methods from cppjieba
 
-    def cut(self, text, unicode_flag=False):
+    def cut(self, text):
         text = self.convert_encode(text)
 
         cdef vector[string] words_vector
@@ -113,40 +110,41 @@ cdef class JiebaX:
         # cdef list words = words_vector
 
         cdef list words_unicode
-        if unicode_flag:
-            words_unicode = words_vector
-            words_unicode = [unicode(word, "utf-8") for word in words_unicode]
-            return words_unicode
-        
-        return words_vector
+        words_unicode = words_vector
+        words_unicode = [word.decode("utf-8") for word in words_unicode]
+        return words_unicode
+    
+    def encode_pairs(self, words_pos_vector):
+        return [(x[0].decode("utf-8"),x[1].decode("utf-8")) for x in words_pos_vector]
 
     def posseg(self, text):
         text = self.convert_encode(text)
 
         cdef vector[pair[string, string]] words_pos_vector
         self.thisptr.Tag(text, words_pos_vector)
+        # TODO: return pair
+        return self.encode_pairs(words_pos_vector)
 
-        return words_pos_vector
-
-    def posseg_nav(self, text, return_pair=False):
+    def posseg_nav(self, text, int return_pair=0):
         text = self.convert_encode(text)
 
         cdef vector[pair[string, string]] words_pos_vector
         self.thisptr.TagNAV(text, words_pos_vector)
 
         if return_pair:
-            return words_pos_vector
+            return self.encode_pairs(words_pos_vector)
 
         # no pair
         cdef vector[pair[string, string]].iterator words_pos_vector_iter = words_pos_vector.begin()
-        cdef vector[string] words
+        cdef list words = []
+        cdef bytes s
         cdef pair[string, string] temp_pair
         
         # cdef int counter = 0
         while words_pos_vector_iter != words_pos_vector.end():
             temp_pair = deref(words_pos_vector_iter)
-
-            words.push_back(temp_pair.first)
+            s = temp_pair.first
+            words.append(s.decode("utf-8"))
             inc(words_pos_vector_iter)
             # counter += 1
 
@@ -154,30 +152,22 @@ cdef class JiebaX:
 
         return words
 
-    def posseg_filter(self, text, set ifin_set=set(), list startswith_list=list(), return_pair=False):
+    def posseg_filter(self, text, set ifin_set=set(), list startswith_list=list(), int return_pair=0):
         text = self.convert_encode(text)
         
         cdef vector[pair[string, string]] words_pos_vector
-        cdef vector[string] words_vector
-        
+        cdef vector[string] words_vector        
         cdef vector[string] ifin_list = list(ifin_set)
 
-        cdef int return_pair_int
+        self.thisptr.TagFilter(text, words_pos_vector, words_vector, ifin_list, startswith_list, return_pair)
+        cdef list words
         if return_pair:
-            return_pair_int = 1
+            return self.encode_pairs(words_pos_vector)
         else:
-            return_pair_int = 0
+            words = words_vector
+            return [w.decode("utf-8") for w in words]
 
-        # print ifin_list
-        # print startswith_list
-        self.thisptr.TagFilter(text, words_pos_vector, words_vector, ifin_list, startswith_list, return_pair_int)
-
-        if return_pair:
-            return words_pos_vector
-        else:
-            return words_vector
-
-    def cut_multi(self, text_list, unicode_flag=False,int n_jobs=2):
+    def cut_multi(self, text_list, int n_jobs=2):
         text_list = [self.convert_encode(t) for t in text_list]
         cdef:
             vector[string] text_vect = text_list
@@ -199,13 +189,10 @@ cdef class JiebaX:
                     1
                 )
 
-        cdef list words_unicode_job = [],  words_unicode = []
-        if unicode_flag:
-            words_unicode_job = words_vector_job
-            words_unicode = [[unicode(word, "utf-8") for word in words_unicode] for words_unicode in words_unicode_job]
-            return words_unicode_job
+        cdef list words_unicode_job = words_vector_job,  words_unicode
+        words_unicode_job = [[word.decode("utf-8") for word in words_unicode] for words_unicode in words_unicode_job]
         
-        return words_vector_job
+        return words_unicode_job
 
     # for backwards compability
 
@@ -292,19 +279,19 @@ cdef class JiebaXTextRank:
 
     cdef TextRankExtractor *thisptr
 
-    def __cinit__(self, JiebaX jiebax, string stop_words_filepath=STOPWORDS_PATH):
-        self.thisptr = new TextRankExtractor(deref(jiebax.thisptr), stop_words_filepath)
+    def __cinit__(self, JiebaX jiebax, stop_words_filepath=STOPWORDS_PATH):
+        self.thisptr = new TextRankExtractor(deref(jiebax.thisptr), stop_words_filepath.encode("utf-8"))
     def __dealloc__(self):
         del self.thisptr
 
-    def extract(self, string text, int max_words=50):
+    def extract(self, text, int max_words=50):
         cdef vector[pair[string, double]] keyword_weight_list
-        self.thisptr.Extract(text, keyword_weight_list, max_words)
+        self.thisptr.Extract(text.encode("utf-8"), keyword_weight_list, max_words)
 
         return keyword_weight_list
 
     def extract_by_words(self, list words, int max_words=50, int n_span=5, int max_rank_epoch=10):
-        cdef vector[string] words_vector = words
+        cdef vector[string] words_vector = [w.encode("utf-8") for w in words]
         cdef vector[pair[string, double]] keyword_weight_list
 
         if len(words) < 3:

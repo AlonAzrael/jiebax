@@ -1,6 +1,4 @@
-
-
-
+from __future__ import unicode_literals, print_function
 from cppjieba import JiebaX as JiebaX, JiebaXTextRank as TextRankWords
 
 # print "import jiebax"
@@ -29,6 +27,6 @@ class TextUtils(object):
         if type(text) != unicode:
             text = unicode(text, "utf-8", "ignore")
 
-        return re.sub(ur"[^\u4e00-\u9fa5\n]+", placeholder, text)
+        return re.sub(r"[^\u4e00-\u9fa5\n]+", placeholder, text)
 
 
